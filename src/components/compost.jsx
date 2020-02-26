@@ -19,11 +19,16 @@ const state = {
 }
 
 const Compost = () => {
+  const menuItem = [];
+  const list = [];
 
-  const toRender = [];
+  for (let i in state.users) {
+    console.log(i);
+    menuItem.push(<MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>)
+  }
 
   for (let i = 0; i < state.list.length; i++) {
-    toRender.push(<TextField id="outlined-basic" variant="outlined" value={state.list[i].itemName} />,
+    list.push(<TextField id="outlined-basic" variant="outlined" value={state.list[i].itemName} />,
       <FormControl >
         <InputLabel >Name</InputLabel>
         <Select
@@ -32,9 +37,7 @@ const Compost = () => {
         // value={}
 
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {menuItem}
         </Select>
       </FormControl>);
   }
@@ -61,7 +64,7 @@ const Compost = () => {
         <div style={{ border: "solid", minHeight: '70vh' }}>
           <form style={{ display: "flex", flexDirection: 'column' }}>
 
-            {toRender}
+            {list}
           </form>
         </div>
       </div>
