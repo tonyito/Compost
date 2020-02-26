@@ -63,6 +63,11 @@ const Compost = () => {
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>,
     );
   }
+  const handleTextEdit = event => {
+    setChangedRow(event.target.id: true)
+    console.log('this is handleTextEdit', event.target.id);
+  };
+
 
   for (let i in state.list) {
     list.push(
@@ -79,6 +84,7 @@ const Compost = () => {
           id={`item${i}`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
+          onChange={handleTextEdit}
         />
         <FormControl>
           <InputLabel htmlFor={`user${i}`}>Name</InputLabel>
@@ -113,6 +119,7 @@ const Compost = () => {
           if (e.target.value.length === 1) {
             setNewInputs(newInputsLength + 1);
             newInputs.push(row);
+            changedRow(item[i]);
           }
         }}
       />
@@ -143,9 +150,10 @@ const Compost = () => {
         itemName: event.target[`item${i}`].value,
       });
     }
-    console.log('this is event target', event.target.user1);
+    // console.log('this is event target', event.target.user1);
   };
 
+  
   return (
     <>
       <div
