@@ -52,21 +52,23 @@ const Compost = () => {
   for (let i = 0; i < state.list.length; i++) {
     console.log('defaultvalue', state.users[state.list[i].user].name);
     list.push(
-      <TextField
-        id="outlined-basic"
-        variant="outlined"
-        value={state.list[i].itemName}
-      />,
+      <div style={{ display: 'flex', justifyContent: 'space-around', margin: '1vh' }}>
+      <TextField style={{ width: '70vh' }}
+      id="outlined-basic"
+      variant="outlined"
+      value={state.list[i].itemName}
+      />
       <FormControl>
         <InputLabel>Name</InputLabel>
-        <Select
+        <Select style={{ width: '30vh' }}
           labelId="demo-simple-select-label"
           id={`responsibility${i}`}
           defaultValue={state.users[state.list[i].user].id}
-        >
+          >
           {menuItem}
         </Select>
       </FormControl>
+          </div>
     );
   }
 
@@ -110,6 +112,7 @@ const Compost = () => {
         <div style={{ border: 'solid', minHeight: '70vh' }}>
           <form style={{ display: 'flex', flexDirection: 'column' }}>
             {list}
+            <Button variant="contained" color="primary" >Save Changes</Button>
           </form>
         </div>
       </div>
