@@ -18,7 +18,7 @@ mainController.getPageUnique = (req, res, next) => {
     })
     .catch(err =>
       next({
-        log: `Express error handler caught getItems error ${err}`,
+        log: `Express error handler caught getPageUnique error ${err}`,
         status: 400,
         message: { err: `${err}` }
       })
