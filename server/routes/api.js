@@ -30,4 +30,10 @@ router.post(
   (req, res) => res.sendStatus(200),
 );
 
+//route post requests to /api/pages/ here
+router.post(
+  '/pages', postController.postNewPage,
+  (req, res) => res.sendStatus(200),
+);
+
 module.exports = router;

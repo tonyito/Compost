@@ -1,4 +1,5 @@
 const db = require('../models/compostModels');
+const { v4 }= require('uuid');
 
 const postController = {};
 
@@ -59,6 +60,24 @@ postController.postNew = async (req, res, next) => {
       message: { err: `${err}` },
     });
   }
+};
+
+//controller to POST new page to the database
+postController.postNewPage = (req, res, next) => {
+  const query = `INSERT INTO pages (param, active, location, brief, title, date) 
+                VALUES ($1, true, $2, $3, $4, $5)`;
+  res.locals.locationID = v4();
+  db.query(query, [res.locals.locationID, req.body.location, req.body.brief, req.body.title, req.body.date])
+    .then(() => {
+      next();
+    })
+    .catch(err =>
+      next({
+        log: `Express error handler caught getPageUnique from postNewPage error ${err}`,
+        status: 400,
+        message: { err: `${err}` },
+      }),
+    );
 };
 
 module.exports = postController;
