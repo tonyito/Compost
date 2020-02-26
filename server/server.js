@@ -6,14 +6,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 const DIST_DIR = path.join(__dirname, '../dist'); 
 const HTML_FILE = path.join(DIST_DIR, 'index.html'); // NEW
-// const apiRouter = require('./routes/api.js');
+const apiRouter = require('./routes/api.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(DIST_DIR));
 
 
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
 
 app.get('/', (req, res) => {
