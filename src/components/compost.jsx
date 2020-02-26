@@ -42,7 +42,7 @@ const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
   const [grabData, setGrabData] = useState(false);
 
-  const { id } = useParams();
+  let { id } = useParams();
 
   useEffect(() => {
     fetch(`/api/${id}`)
@@ -55,13 +55,13 @@ const Compost = () => {
   const menuItem = [];
   const list = [];
 
-  for (const i in state.users) {
+  for (let i in state.users) {
     menuItem.push(
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>,
     );
   }
 
-  for (let i = 0; i < state.list.length; i++) {
+  for (let i in state.list) {
     console.log('defaultvalue', state.users[state.list[i].user].name);
     list.push(
       <div
@@ -70,19 +70,20 @@ const Compost = () => {
           justifyContent: 'space-around',
           margin: '1vh',
         }}
+        className="itemRow"
       >
         <TextField
           style={{ width: '70vh' }}
-          id="outlined-basic"
+          id={`item${state.list[i].id}`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
         />
         <FormControl>
-          <InputLabel>Name</InputLabel>
+          <InputLabel htmlFor={`responsibility${i}`}>Name</InputLabel>
           <Select
             style={{ width: '30vh' }}
-            labelId="demo-simple-select-label"
-            id={`responsibility${i}`}
+            labelId={i}
+            id={i}
             defaultValue={state.users[state.list[i].user].id}
           >
             {menuItem}
@@ -91,6 +92,11 @@ const Compost = () => {
       </div>,
     );
   }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const result = [];
+  };
 
   return (
     <>
@@ -140,8 +146,34 @@ const Compost = () => {
           </div>
         </div>
         <form style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ height: '62vh', overflow: 'auto' }}>{list}</div>
-          <Button variant="contained" color="primary">
+          <div style={{ height: '62vh', overflow: 'auto' }}>
+            {list}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                margin: '1vh',
+              }}
+            >
+              <TextField
+                style={{ width: '70vh' }}
+                id="outlined-basic"
+                variant="outlined"
+                placeHolder="New Item"
+              />
+              <FormControl>
+                <InputLabel>Name</InputLabel>
+                <Select
+                  style={{ width: '30vh' }}
+                  labelId="demo-simple-select-label"
+                  id={`responsibility`}
+                >
+                  {menuItem}
+                </Select>
+              </FormControl>
+            </div>
+          </div>
+          <Button variant="contained" type="submit" color="primary">
             Save Changes
           </Button>
         </form>
