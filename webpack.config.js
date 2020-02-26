@@ -6,12 +6,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: [
     // entry point of our app
-    './src/index.js',
+    './src/index.js'
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   devtool: 'eval-source-map',
   mode: 'development',
@@ -39,9 +39,9 @@ module.exports = {
     proxy: {
       '/api/**': {
         target: 'http://localhost:3000/',
-        secure: false,
+        secure: false
       }
-    },
+    }
   },
   module: {
     rules: [
@@ -49,22 +49,34 @@ module.exports = {
         test: /.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-        },
+          loader: 'babel-loader'
+        }
       },
       {
         test: /.(css|scss)$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }
+        ]
       }
-    ],
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
+      template: './src/index.html'
+    })
   ],
   resolve: {
     // Enable importing JS / JSX files without specifying their extension
-    extensions: ['.js', '.jsx'],
-  },
+    extensions: ['.js', '.jsx']
+  }
 };
