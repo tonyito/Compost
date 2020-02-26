@@ -59,6 +59,7 @@ mainController.getUsers = (req, res, next) => {
         const output = {};
         for (value of data.rows) {
             const temp = {
+                id: value.id,
                 phone: value.phone,
                 email: value.email,
                 name: value.name
