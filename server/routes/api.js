@@ -22,6 +22,6 @@ router.get(
 );
 
 //route all post requests to /api/ here
-router.post('/', postController.postQuery, (req, res) => res.sendStatus(200));
+router.post('/', postController.getPageUnique, postController.postUpdate, postController.postNew, (req, res) => res.sendStatus(200));
 
 module.exports = router;
