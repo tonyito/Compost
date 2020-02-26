@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core';
+import { Form } from 'react-bootstrap';
 
 // const state = {
 //   information: {
@@ -42,7 +43,7 @@ const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
   const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
-  const [changedRow, setChangedRow] = useState({});
+  const [changedRows, setChangedRows] = useState({});
 
   let { id } = useParams();
 
@@ -65,6 +66,7 @@ const Compost = () => {
   }
 
   for (let i in state.list) {
+    console.log(i);
     list.push(
       <div
         style={{
@@ -76,17 +78,22 @@ const Compost = () => {
       >
         <TextField
           style={{ width: '70vh' }}
-          id={`item${i}`}
+          id={`row${i}item`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
+          inputProps={{
+            itemID: state.list[i].id,
+          }}
         />
+
         <FormControl>
-          <InputLabel htmlFor={`user${i}`}>Name</InputLabel>
+          <InputLabel>Name</InputLabel>
           <Select
             style={{ width: '30vh' }}
-            labelId={`user${i}`}
-            id={`user${i}`}
             defaultValue={state.list[i].user}
+            inputProps={{
+              id: 'row' + i + 'user',
+            }}
           >
             {menuItem}
           </Select>
@@ -136,14 +143,14 @@ const Compost = () => {
   const handleSubmit = event => {
     event.preventDefault();
     const result = [];
-    for (let i in changedRow) {
+    for (let i in changedRows) {
       result.push({
-        id: i,
-        user: event.target[i].value,
-        itemName: event.target[`item${i}`].value,
+        id: event.target[`row${i}item`].getAttribute('itemID'),
+        user: event.target[`row${i}user`].value,
+        itemName: event.target[`row${i}item`].value,
       });
     }
-    console.log('this is event target', event.target.user1);
+    console.log(result);
   };
 
   return (
