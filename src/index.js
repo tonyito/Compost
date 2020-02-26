@@ -10,7 +10,10 @@ const Index = () => {
   return (
     <div>
       <Router>
-        <Route path="/compost" component={Compost} />
+        <Switch>
+          <Route path="/page/:id" component={Compost} />
+          <Route path="/" component={Home}/>
+        </Switch>
       </Router>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,  { useState,  useEffect } from 'react';
 import '../styles.scss';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
@@ -14,35 +14,55 @@ import {
   MenuItem
 } from '@material-ui/core';
 
-const state = {
-  information: {
-    date: '01/01/2020 - 02/01/2020',
-    brief:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    title: 'Vegas Baby!',
-    location: 'Las Vegas, NV'
-  },
-  list: [
-    { id: 1, user: 1, itemName: 'clothing' },
-    { id: 2, user: 2, itemName: 'wet wipes' },
-    { id: 3, user: 3, itemName: 'the booze' }
-  ],
-  users: {
-    1: { id: 1, name: 'Andie', phone: 234567, email: 'aslfkj@akjsdf.com' },
-    2: {
-      id: 2,
-      name: 'Sean',
-      phone: 123234567890,
-      email: 'asihgaoig@fjkahweg;jh.com'
-    },
-    3: { id: 3, name: 'Noah', phone: 2234567890, email: 'EKHLNH@kjhogn.com' }
-  }
-};
+
+
+
+// const state = {
+//   information: {
+//     date: '01/01/2020 - 02/01/2020',
+//     brief:
+//       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+//     title: 'Vegas Baby!',
+//     location: 'Las Vegas, NV'
+//   },
+  // list: [
+//     { id: 1, user: 1, itemName: 'clothing' },
+//     { id: 2, user: 2, itemName: 'wet wipes' },
+//     { id: 3, user: 3, itemName: 'the booze' }
+//   ],
+//   users: {
+//     1: { id: 1, name: 'Andie', phone: 234567, email: 'aslfkj@akjsdf.com' },
+//     2: {
+//       id: 2,
+//       name: 'Sean',
+//       phone: 123234567890,
+//       email: 'asihgaoig@fjkahweg;jh.com'
+//     },
+//     3: { id: 3, name: 'Noah', phone: 2234567890, email: 'EKHLNH@kjhogn.com' }
+//   }
+// };
+
+
 
 const Compost = () => {
+
+  const [state, setState] = useState({information: {}, list: [], users: {}})
+
+  let {id } = useParams();
+
+  useEffect(() => {
+    fetch('/api/qwerty').then(res => res.json())
+    .then(data => {
+      setState(data)
+    })
+  });
+
+
+
+
   const menuItem = [];
   const list = [];
-
+  
   for (let i in state.users) {
     menuItem.push(
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>
@@ -116,6 +136,7 @@ const Compost = () => {
           </form>
         </div>
       </div>
+
     </>
   );
 };
