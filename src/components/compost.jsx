@@ -48,6 +48,7 @@ const Compost = () => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setState(data);
       });
   }, [grabData]);
@@ -62,7 +63,6 @@ const Compost = () => {
   }
 
   for (let i in state.list) {
-    console.log('defaultvalue', state.users[state.list[i].user].name);
     list.push(
       <div
         style={{
@@ -74,7 +74,7 @@ const Compost = () => {
       >
         <TextField
           style={{ width: '70vh' }}
-          id={`item${state.list[i].id}`}
+          id={`item${i}`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
         />
@@ -84,7 +84,7 @@ const Compost = () => {
             style={{ width: '30vh' }}
             labelId={i}
             id={i}
-            defaultValue={state.users[state.list[i].user].id}
+            defaultValue={state.list[i].user}
           >
             {menuItem}
           </Select>
