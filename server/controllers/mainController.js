@@ -1,23 +1,22 @@
-// const models = require('../models/compostModels');
+const db = require('../models/compostModels');
 
-// const mainController = {};
+const mainController = {};
 
-// const { Sample } = models;
 
-//middleware 
-// mainController.getSample = (req, res, next) => {
-//   Sample.find({}, (err, sample) => {
-//     if (err)
-//       return next({
-//         log: `Express error handler caught getSample error ${err}`,
-//         status: 400,
-//         message: { err: `${err}` }
-//       });
-//     else {
-//       res.locals.sample = sample;
-//       return next();
-//     }
-//   });
-// };
+//controller to get all items
+mainController.getItems = (req, res, next) => {
+    const query = 'SELECT * FROM items';
+    db.query(query)
+    .then ( data => {
+      res.locals.items = data.rows;
+      next();
+    }
+    )
+    .catch (err => next({
+      log: `Express error handler caught getItems error ${err}`,
+      status: 400,
+      message: { err: `${err}`},
+    }))
+};
 
-// module.exports = mainController;
+module.exports = mainController;

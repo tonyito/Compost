@@ -1,15 +1,17 @@
-// const express = require('express');
+const express = require('express');
 
-// const mainController = require('../controllers/mainController.js');
+const mainController = require('../controllers/mainController.js');
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post('/', mainController.getSample, (req, res) =>
-//   res.status(200)
-// );
+//route all post requests to /api/ here
+router.post('/', (req, res) =>
+  res.status(200)
+);
 
-// router.get('/', mainController.getSample, (req, res) =>
-//   res.status(200).json(res.locals.sample)
-// );
+//route all get requests to /api/ here
+router.get('/', mainController.getItems, (req, res) =>
+  res.status(200).json(res.locals.items)
+);
 
-// module.exports = router;
+module.exports = router;
