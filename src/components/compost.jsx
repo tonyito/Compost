@@ -42,6 +42,7 @@ const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
   const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
+  const [changedRow, setChangedRow] = useState({});
 
   let { id } = useParams();
 
@@ -49,7 +50,7 @@ const Compost = () => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setState(data);
       });
   }, [grabData]);
@@ -80,11 +81,11 @@ const Compost = () => {
           defaultValue={state.list[i].itemName}
         />
         <FormControl>
-          <InputLabel htmlFor={`responsibility${i}`}>Name</InputLabel>
+          <InputLabel htmlFor={`user${i}`}>Name</InputLabel>
           <Select
             style={{ width: '30vh' }}
-            labelId={i}
-            id={i}
+            labelId={`user${i}`}
+            id={`user${i}`}
             defaultValue={state.list[i].user}
           >
             {menuItem}
@@ -135,6 +136,14 @@ const Compost = () => {
   const handleSubmit = event => {
     event.preventDefault();
     const result = [];
+    for (let i in changedRow) {
+      result.push({
+        id: i,
+        user: event.target[i].value,
+        itemName: event.target[`item${i}`].value,
+      });
+    }
+    console.log('this is event target', event.target.user1);
   };
 
   return (
@@ -184,7 +193,10 @@ const Compost = () => {
             </Button>
           </div>
         </div>
-        <form style={{ display: 'flex', flexDirection: 'column' }}>
+        <form
+          style={{ display: 'flex', flexDirection: 'column' }}
+          onSubmit={handleSubmit}
+        >
           <div style={{ height: '62vh', overflow: 'auto' }}>
             {list}
             {newInputs}
