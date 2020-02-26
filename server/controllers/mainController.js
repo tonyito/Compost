@@ -18,7 +18,7 @@ mainController.getPageUnique = (req, res, next) => {
     })
     .catch(err =>
       next({
-        log: `Express error handler caught getItems error ${err}`,
+        log: `Express error handler caught getPageUnique error ${err}`,
         status: 400,
         message: { err: `${err}` }
       })
@@ -27,9 +27,8 @@ mainController.getPageUnique = (req, res, next) => {
 
 //controller to get list of items from a selected page
 mainController.getList = (req, res, next) => {
-  const query = `SELECT items.id AS id, items.name AS item_name, users.id AS user_id FROM items 
-                INNER JOIN pages ON items.page_id = ${res.locals.locationID} 
-                INNER JOIN users ON items.user_id = users.id;`;
+  const query = `SELECT items.id AS id, items.name AS item_name, user_id FROM items 
+                INNER JOIN pages ON items.page_id = ${res.locals.locationID} `;
   db.query(query)
     .then(data => {
       const output = [];
@@ -60,6 +59,7 @@ mainController.getUsers = (req, res, next) => {
         const output = {};
         for (value of data.rows) {
             const temp = {
+                id: value.id,
                 phone: value.phone,
                 email: value.email,
                 name: value.name
