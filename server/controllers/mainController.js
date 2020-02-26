@@ -27,7 +27,7 @@ mainController.getPageUnique = (req, res, next) => {
 
 //controller to get list of items from a selected page
 mainController.getList = (req, res, next) => {
-  const query = `SELECT items.id AS id, items.name AS item_name, users.name AS user_name FROM items 
+  const query = `SELECT items.id AS id, items.name AS item_name, users.id AS user_id FROM items 
                 INNER JOIN pages ON items.page_id = ${res.locals.locationID} 
                 INNER JOIN users ON items.user_id = users.id;`;
   db.query(query)
@@ -36,8 +36,8 @@ mainController.getList = (req, res, next) => {
       for (value of data.rows) {
         output.push({
           id: value.id,
-          user: value.user_name,
-          name: value.item_name
+          user: value.user_id,
+          itemName: value.item_name
         });
       }
       res.locals.list = output;
