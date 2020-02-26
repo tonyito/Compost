@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles.scss';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router';
 import {
@@ -106,42 +104,49 @@ const Compost = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          border: 'solid',
-          minHeight: '100vh',
+          minHeight: '90vh',
+          backgroundColor: '#eeeeee',
         }}
       >
         <div
           style={{
             display: 'flex',
-            flexDirection: 'row',
-            border: 'solid',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: 'solid',
             minHeight: '30vh',
           }}
         >
-          <div style={{ border: 'solid', minWidth: '60%' }}>
+          <Typography variant="h1" component="h2" gutterBottom>
             {state.information.title}
-            <br />
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
             {state.information.brief}
-            <br />
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
             {state.information.date}
-            <br />
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
             {state.information.location}
-          </div>
-          <div style={{ border: 'solid', minWidth: '40%' }}>
-            <Button variant="contained" color="primary">
-              add user
-            </Button>
-            <br />
+          </Typography>
+          <div
+            style={{
+              display: 'flex',
+            }}
+          >
+            <div style={{ marginRight: '10px' }}>
+              <Button variant="contained" color="primary">
+                add user
+              </Button>
+            </div>
             <Button variant="contained" color="primary">
               delete user
             </Button>
           </div>
         </div>
-        <div style={{ border: 'solid', minHeight: '70vh' }}>
-          <form
-            style={{ display: 'flex', flexDirection: 'column' }}
-            onSubmit={handleSubmit}
-          >
+        <form style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ height: '62vh', overflow: 'auto' }}>
             {list}
             <div
               style={{
@@ -167,31 +172,14 @@ const Compost = () => {
                 </Select>
               </FormControl>
             </div>
-
-            <Button variant="contained" color="primary" type="submit">
-              Save Changes
-            </Button>
-          </form>
-        </div>
+          </div>
+          <Button variant="contained" type="submit" color="primary">
+            Save Changes
+          </Button>
+        </form>
       </div>
     </>
   );
-};
-
-const styles = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-around',
-  border: '1px solid black',
-  height: '150px',
-};
-
-const styles2 = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  border: '1px solid black',
-  height: '100%',
 };
 
 export default Compost;
