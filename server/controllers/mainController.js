@@ -4,8 +4,8 @@ const mainController = {};
 
 //controller to get info from a selected page
 mainController.getPageUnique = (req, res, next) => {
-  const query = `SELECT * FROM pages WHERE param='${req.params.id}' `;
-  db.query(query)
+  const query = `SELECT * FROM pages WHERE param = $1`;
+  db.query(query, [req.params.id])
     .then(data => {
       res.locals.info = {
         date: data.rows[0].date,
@@ -28,8 +28,8 @@ mainController.getPageUnique = (req, res, next) => {
 //controller to get list of items from a selected page
 mainController.getList = (req, res, next) => {
   const query = `SELECT items.id AS id, items.name AS item_name, user_id FROM items 
-                INNER JOIN pages ON items.page_id = ${res.locals.locationID} AND pages.id = ${res.locals.locationID}`;
-  db.query(query)
+                INNER JOIN pages ON items.page_id = $1 AND pages.id = $1`;
+  db.query(query, [res.locals.locationID])
     .then(data => {
       const output = [];
       for (value of data.rows) {
@@ -56,8 +56,8 @@ mainController.getList = (req, res, next) => {
 
 //controller to get users from a selected page
 mainController.getUsers = (req, res, next) => {
-    const query = `SELECT * FROM users WHERE page_id = ${res.locals.locationID};`;
-    db.query(query)
+    const query = `SELECT * FROM users WHERE page_id = $1`;
+    db.query(query, [res.locals.locationID])
       .then(data => {
         const output = {};
         for (value of data.rows) {
