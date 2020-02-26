@@ -5,6 +5,7 @@ import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
+import { useParams} from "react-router";
 import {
   Grid,
   FormHelperText,
@@ -47,15 +48,16 @@ import {
 const Compost = () => {
 
   const [state, setState] = useState({information: {}, list: [], users: {}})
+  const [grabData,setGrabData] = useState(false);
 
   let {id } = useParams();
 
   useEffect(() => {
-    fetch('/api/qwerty').then(res => res.json())
+    fetch(`/api/${id}`).then(res => res.json())
     .then(data => {
       setState(data)
     })
-  });
+  }, [grabData]);
 
 
 
