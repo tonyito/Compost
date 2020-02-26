@@ -14,8 +14,11 @@ const Index = () => {
           <Link to="/camp">Camp</Link>
         </div>
         <Switch>
-          <Route path="/">
-            <Home />
+          <Route path="/compost">
+            <Compost />
+          </Route>
+          <Route path="/camp">
+            <Camp />
           </Route>
         </Switch>
       </Router>
