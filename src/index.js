@@ -7,6 +7,12 @@ const Index = () => {
   return (
     <div>
       <Router>
+        <div>
+          <Link to="/compost">Compost</Link>
+        </div>
+        <div>
+          <Link to="/camp">Camp</Link>
+        </div>
         <Switch>
           <Route path="/">
             <Home />
