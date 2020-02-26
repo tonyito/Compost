@@ -15,13 +15,19 @@ router.get(
     const response = {
       information: res.locals.info,
       list: res.locals.list,
-      users: res.locals.users
+      users: res.locals.users,
     };
     res.status(200).json(response);
-  }
+  },
 );
 
-//route all post requests to /api/ here
-router.post('/', postController.getPageUnique, postController.postUpdate, postController.postNew, (req, res) => res.sendStatus(200));
+//route post requests to /api/items/ here
+router.post(
+  '/items',
+  postController.getPageUnique,
+  postController.postUpdate,
+  postController.postNew,
+  (req, res) => res.sendStatus(200),
+);
 
 module.exports = router;

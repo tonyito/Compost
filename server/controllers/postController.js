@@ -14,8 +14,8 @@ postController.getPageUnique = (req, res, next) => {
       next({
         log: `Express error handler caught getPageUnique from postController error ${err}`,
         status: 400,
-        message: { err: `${err}` }
-      })
+        message: { err: `${err}` },
+      }),
     );
 };
 
@@ -27,7 +27,7 @@ postController.postUpdate = async (req, res, next) => {
     for (value of updatedItems) {
       const sendQuery = await db.query(
         `UPDATE items SET user_id = $1, name = $2 WHERE id = $3`,
-        [value.user, value.name, value.id]
+        [value.user, value.name, value.id],
       );
     }
     return next();
@@ -48,7 +48,7 @@ postController.postNew = async (req, res, next) => {
     for (value of newItems) {
       const sendQuery = await db.query(
         `INSERT INTO items (page_id, user_id, name, complete) VALUES ($1, $2, $3, false)`,
-        [res.locals.locationID, value.user, value.name]
+        [res.locals.locationID, value.user, value.name],
       );
     }
     next();
