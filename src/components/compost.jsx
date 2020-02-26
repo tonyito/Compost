@@ -40,6 +40,7 @@ import {
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
+  const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
 
   let { id } = useParams();
@@ -91,6 +92,44 @@ const Compost = () => {
         </FormControl>
       </div>,
     );
+  }
+
+  const row = (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        margin: '1vh',
+      }}
+      className="itemRow"
+    >
+      <TextField
+        style={{ width: '70vh' }}
+        id="outlined-basic"
+        variant="outlined"
+        placeholder="New Item"
+        onChange={e => {
+          if (e.target.value.length === 1) {
+            setNewInputs(newInputsLength + 1);
+            newInputs.push(row);
+          }
+        }}
+      />
+      <FormControl>
+        <InputLabel>Name</InputLabel>
+        <Select
+          style={{ width: '30vh' }}
+          labelId="demo-simple-select-label"
+          id={`responsibility`}
+        >
+          {menuItem}
+        </Select>
+      </FormControl>
+    </div>
+  );
+  const newInputs = [];
+  for (let i = 0; i < newInputsLength; i++) {
+    newInputs.push(row);
   }
 
   const handleSubmit = event => {
@@ -148,30 +187,7 @@ const Compost = () => {
         <form style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ height: '62vh', overflow: 'auto' }}>
             {list}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                margin: '1vh',
-              }}
-            >
-              <TextField
-                style={{ width: '70vh' }}
-                id="outlined-basic"
-                variant="outlined"
-                placeHolder="New Item"
-              />
-              <FormControl>
-                <InputLabel>Name</InputLabel>
-                <Select
-                  style={{ width: '30vh' }}
-                  labelId="demo-simple-select-label"
-                  id={`responsibility`}
-                >
-                  {menuItem}
-                </Select>
-              </FormControl>
-            </div>
+            {newInputs}
           </div>
           <Button variant="contained" type="submit" color="primary">
             Save Changes
