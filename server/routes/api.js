@@ -1,6 +1,7 @@
 const express = require('express');
 
 const mainController = require('../controllers/mainController.js');
+const postController = require('../controllers/postController.js');
 
 const router = express.Router();
 
@@ -21,6 +22,6 @@ router.get(
 );
 
 //route all post requests to /api/ here
-router.post('/', (req, res) => res.status(200));
+router.post('/', postController.postQuery, (req, res) => res.sendStatus(200));
 
 module.exports = router;
