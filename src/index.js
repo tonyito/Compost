@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import Home from './home.jsx';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import 'typeface-roboto';
+
 const Index = () => {
   return (
     <div>
@@ -13,7 +15,6 @@ const Index = () => {
           </Route>
         </Switch>
       </Router>
-
     </div>
   );
 };
