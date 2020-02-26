@@ -78,7 +78,7 @@ const Compost = () => {
       <TextField style={{ width: '70vh' }}
       id="outlined-basic"
       variant="outlined"
-      value={state.list[i].itemName}
+      defaultValue={state.list[i].itemName}
       />
       <FormControl>
         <InputLabel>Name</InputLabel>
