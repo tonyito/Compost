@@ -40,7 +40,9 @@ import {
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
+  const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
+  const [changedRow, setChangedRow] = useState({});
 
   let { id } = useParams();
 
@@ -48,6 +50,7 @@ const Compost = () => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
+        // console.log(data);
         setState(data);
       });
   }, [grabData]);
@@ -62,7 +65,6 @@ const Compost = () => {
   }
 
   for (let i in state.list) {
-    console.log('defaultvalue', state.users[state.list[i].user].name);
     list.push(
       <div
         style={{
@@ -74,17 +76,17 @@ const Compost = () => {
       >
         <TextField
           style={{ width: '70vh' }}
-          id={`item${state.list[i].id}`}
+          id={`item${i}`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
         />
         <FormControl>
-          <InputLabel htmlFor={`responsibility${i}`}>Name</InputLabel>
+          <InputLabel htmlFor={`user${i}`}>Name</InputLabel>
           <Select
             style={{ width: '30vh' }}
-            labelId={i}
-            id={i}
-            defaultValue={state.users[state.list[i].user].id}
+            labelId={`user${i}`}
+            id={`user${i}`}
+            defaultValue={state.list[i].user}
           >
             {menuItem}
           </Select>
@@ -93,9 +95,55 @@ const Compost = () => {
     );
   }
 
+  const row = (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        margin: '1vh',
+      }}
+      className="itemRow"
+    >
+      <TextField
+        style={{ width: '70vh' }}
+        id="outlined-basic"
+        variant="outlined"
+        placeholder="New Item"
+        onChange={e => {
+          if (e.target.value.length === 1) {
+            setNewInputs(newInputsLength + 1);
+            newInputs.push(row);
+          }
+        }}
+      />
+      <FormControl>
+        <InputLabel>Name</InputLabel>
+        <Select
+          style={{ width: '30vh' }}
+          labelId="demo-simple-select-label"
+          id={`responsibility`}
+        >
+          {menuItem}
+        </Select>
+      </FormControl>
+    </div>
+  );
+  const newInputs = [];
+  for (let i = 0; i < newInputsLength; i++) {
+    newInputs.push(row);
+  }
+
   const handleSubmit = event => {
     event.preventDefault();
     const result = [];
+    for (let i in changedRow) {
+      result.push({
+        id: i,
+        user: event.target[i].value,
+        itemName: event.target[`item${i}`].value,
+      });
+    }
+    console.log('this is event target', event.target.user1);
   };
 
   return (
@@ -145,33 +193,13 @@ const Compost = () => {
             </Button>
           </div>
         </div>
-        <form style={{ display: 'flex', flexDirection: 'column' }}>
+        <form
+          style={{ display: 'flex', flexDirection: 'column' }}
+          onSubmit={handleSubmit}
+        >
           <div style={{ height: '62vh', overflow: 'auto' }}>
             {list}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                margin: '1vh',
-              }}
-            >
-              <TextField
-                style={{ width: '70vh' }}
-                id="outlined-basic"
-                variant="outlined"
-                placeHolder="New Item"
-              />
-              <FormControl>
-                <InputLabel>Name</InputLabel>
-                <Select
-                  style={{ width: '30vh' }}
-                  labelId="demo-simple-select-label"
-                  id={`responsibility`}
-                >
-                  {menuItem}
-                </Select>
-              </FormControl>
-            </div>
+            {newInputs}
           </div>
           <Button variant="contained" type="submit" color="primary">
             Save Changes
