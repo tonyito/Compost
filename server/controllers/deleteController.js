@@ -4,7 +4,7 @@ const deleteController = {};
 
 //controller to delete a user from a selected page
 deleteController.deleteUser = (req, res, next) => {
-    const query = `DELETE FROM users WHERE id = $1`;
+    const query = `UPDATE users SET active = false WHERE id = $1`;
     db.query(query, [req.body.id])
       .then(() => {
         return next();
