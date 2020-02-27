@@ -14,15 +14,15 @@ mainController.getPageUnique = (req, res, next) => {
         location: data.rows[0].location,
       };
       res.locals.locationID = data.rows[0].id;
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
+    .catch(err => {
+      return next({
         log: `Express error handler caught getPageUnique from mainController error ${err}`,
         status: 400,
         message: { err: `${err}` },
-      }),
-    );
+      });
+    });
 };
 
 //controller to get list of items from a selected page
@@ -43,15 +43,15 @@ mainController.getList = (req, res, next) => {
         return a.id - b.id;
       });
       res.locals.list = output;
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
+    .catch(err => {
+      return next({
         log: `Express error handler caught getList error ${err}`,
         status: 400,
         message: { err: `${err}` },
-      }),
-    );
+      });
+    });
 };
 
 //controller to get users from a selected page
@@ -70,15 +70,15 @@ mainController.getUsers = (req, res, next) => {
         output[value.id] = temp;
       }
       res.locals.users = output;
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
+    .catch(err => {
+      return next({
         log: `Express error handler caught getUsers error ${err}`,
         status: 400,
         message: { err: `${err}` },
-      }),
-    );
+      });
+    });
 };
 
 module.exports = mainController;
