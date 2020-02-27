@@ -156,30 +156,48 @@ const Compost = () => {
   for (let i = 0; i <= newInputsLength; i++) {
     newInputs.push(row(i));
   }
-  console.log(addedRows);
+
   const handleSubmit = event => {
     event.preventDefault();
     // to keep track of updated items
     const updatedItems = [];
-    // console.log(event.target);
     for (let i in changedRows) {
       updatedItems.push({
         id: event.target[`row${i}item`].getAttribute('itemID'),
         user: event.target[`row${i}user`].value,
-        itemName: event.target[`row${i}item`].value,
+        name: event.target[`row${i}item`].value,
       });
     }
     // to keep track of newly added items;
     const newItems = [];
-    console.log(event.target.newRow0user);
     for (let i in addedRows) {
       newItems.push({
         user: Number(event.target[`newRow${i}user`].value),
-        itemName: event.target[`newRow${i}item`].value,
+        name: event.target[`newRow${i}item`].value,
       });
     }
-    console.log(newItems)
     // add fetch here
+    console.log('new items', newItems);
+    console.log('updated items', updatedItems);
+    fetch('/api/items', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        updatedItems,
+        newItems,
+        location: id
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        setGrabData(!grabData);
+        setNewInputs(0);
+        setAddedRows([]);
+        setChangedRows({});
+      });
+
   };
   return (
     <>
