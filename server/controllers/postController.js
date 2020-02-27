@@ -66,7 +66,7 @@ postController.postNew = async (req, res, next) => {
 postController.postNewPage = (req, res, next) => {
   const query = `INSERT INTO pages (param, active, location, brief, title, date) 
                 VALUES ($1, true, $2, $3, $4, $5)`;
-  res.locals.locationID = v4();
+  res.locals.locationID = v4().slice(0,6);
   db.query(query, [
     res.locals.locationID,
     req.body.location,
@@ -79,7 +79,7 @@ postController.postNewPage = (req, res, next) => {
     })
     .catch(err => {
       return next({
-        log: `Express error handler caught getPageUnique from postNewPage error ${err}`,
+        log: `Express error handler caught postNewPage error ${err}`,
         status: 400,
         message: { err: `${err}` },
       });
@@ -88,15 +88,15 @@ postController.postNewPage = (req, res, next) => {
 
 //controller to POST new user to the database
 postController.postNewUser = (req, res, next) => {
-  const query = `INSERT INTO pages (param, active, location, brief, title, date) 
-                VALUES ($1, true, $2, $3, $4, $5)`;
-  db.query(query)
+  const query = `INSERT INTO users (page_id, name, color, active, phone, email) 
+                VALUES ($1, $2, $3, true, $4, $5)`;
+  db.query(query, [req.body.location, req.body.name, req.body.color, req.body.phone, req.body.email])
     .then(() => {
       return next();
     })
     .catch(err => {
       return next({
-        log: `Express error handler caught getPageUnique from postNewPage error ${err}`,
+        log: `Express error handler caught postNewUser error ${err}`,
         status: 400,
         message: { err: `${err}` },
       });

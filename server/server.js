@@ -19,7 +19,9 @@ app.use('/api', apiRouter);
 app.get('/', (req, res) => {
  res.sendFile(HTML_FILE); 
 });
-app.use((req, res) => res.sendFile(HTML_FILE));
+
+// catch-all route handler for any requests to an unknown route
+app.use((req, res) => res.sendStatus(404));
 
 /**
  * express error handler
