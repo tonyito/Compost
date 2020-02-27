@@ -1,72 +1,55 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import React, { useState, useEffect } from 'react';
 import '../styles.scss';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router';
-import {
-  Grid,
-  FormHelperText,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from '@material-ui/core';
-import { Form } from 'react-bootstrap';
-
-// const state = {
-//   information: {
-//     date: '01/01/2020 - 02/01/2020',
-//     brief:
-//       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-//     title: 'Vegas Baby!',
-//     location: 'Las Vegas, NV'
-//   },
-// list: [
-//     { id: 1, user: 1, itemName: 'clothing' },
-//     { id: 2, user: 2, itemName: 'wet wipes' },
-//     { id: 3, user: 3, itemName: 'the booze' }
-//   ],
-//   users: {
-//     1: { id: 1, name: 'Andie', phone: 234567, email: 'aslfkj@akjsdf.com' },
-//     2: {
-//       id: 2,
-//       name: 'Sean',
-//       phone: 123234567890,
-//       email: 'asihgaoig@fjkahweg;jh.com'
-//     },
-//     3: { id: 3, name: 'Noah', phone: 2234567890, email: 'EKHLNH@kjhogn.com' }
-//   }
-// };
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
   const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
   const [changedRows, setChangedRows] = useState({});
+  const [addedRows, setAddedRows] = useState({});
 
-  let { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
-        // console.log(data);
+        console.log(data);
         setState(data);
+      })
+      .catch(err => {
+        console.log(err);
+        setRedirect(true);
       });
   }, [grabData]);
+
+  if (invalidPage) {
+    return <Redirect to="/" />;
+  }
 
   const menuItem = [];
   const list = [];
 
-  for (let i in state.users) {
+  for (const i in state.users) {
     menuItem.push(
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>,
     );
   }
+  const handleTextEdit = (event, row) => {
+    const newChangedRow = Object.assign({}, changedRows);
+    newChangedRow[row] = true;
+    setChangedRows(newChangedRow);
+  };
 
-  for (let i in state.list) {
-    console.log(i);
+  for (const i in state.list) {
+    // console.log(i);
     list.push(
       <div
         style={{
@@ -81,6 +64,7 @@ const Compost = () => {
           id={`row${i}item`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
+          onChange={e => handleTextEdit(e, i)}
           inputProps={{
             itemID: state.list[i].id,
           }}
@@ -92,7 +76,7 @@ const Compost = () => {
             style={{ width: '30vh' }}
             defaultValue={state.list[i].user}
             inputProps={{
-              id: 'row' + i + 'user',
+              id: `row${i}user`,
             }}
           >
             {menuItem}
@@ -120,6 +104,7 @@ const Compost = () => {
           if (e.target.value.length === 1) {
             setNewInputs(newInputsLength + 1);
             newInputs.push(row);
+            changedRow(item[i]);
           }
         }}
       />
@@ -128,7 +113,7 @@ const Compost = () => {
         <Select
           style={{ width: '30vh' }}
           labelId="demo-simple-select-label"
-          id={`responsibility`}
+          id="responsibility"
         >
           {menuItem}
         </Select>
@@ -142,17 +127,27 @@ const Compost = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const result = [];
-    for (let i in changedRows) {
-      result.push({
+    // to keep track of updated items
+    const updatedItems = [];
+    // console.log(event.target);
+    for (const i in changedRows) {
+      updatedItems.push({
         id: event.target[`row${i}item`].getAttribute('itemID'),
         user: event.target[`row${i}user`].value,
         itemName: event.target[`row${i}item`].value,
       });
     }
-    console.log(result);
+    // to keep track of newly added items;
+    const newItems = [];
+    for (const i in addedRows) {
+      newItems.push({
+        id: event.target[`row${i}item`].getAttribute('itemID'),
+        user: event.target[`row${i}user`].value,
+        itemName: event.target[`row${i}item`].value,
+      });
+    }
+    // add fetch here
   };
-
   return (
     <>
       <div

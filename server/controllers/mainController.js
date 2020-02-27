@@ -11,18 +11,18 @@ mainController.getPageUnique = (req, res, next) => {
         date: data.rows[0].date,
         brief: data.rows[0].brief,
         title: data.rows[0].title,
-        location: data.rows[0].location
+        location: data.rows[0].location,
       };
       res.locals.locationID = data.rows[0].id;
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
-        log: `Express error handler caught getPageUnique error ${err}`,
+    .catch(err => {
+      return next({
+        log: `Express error handler caught getPageUnique from mainController error ${err}`,
         status: 400,
-        message: { err: `${err}` }
-      })
-    );
+        message: { err: `${err}` },
+      });
+    });
 };
 
 //controller to get list of items from a selected page
@@ -36,49 +36,49 @@ mainController.getList = (req, res, next) => {
         output.push({
           id: value.id,
           user: value.user_id,
-          itemName: value.item_name
+          itemName: value.item_name,
         });
       }
       output.sort((a, b) => {
         return a.id - b.id;
-      })
+      });
       res.locals.list = output;
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
+    .catch(err => {
+      return next({
         log: `Express error handler caught getList error ${err}`,
         status: 400,
-        message: { err: `${err}` }
-      })
-    );
+        message: { err: `${err}` },
+      });
+    });
 };
 
 //controller to get users from a selected page
 mainController.getUsers = (req, res, next) => {
-    const query = `SELECT * FROM users WHERE page_id = $1`;
-    db.query(query, [res.locals.locationID])
-      .then(data => {
-        const output = {};
-        for (value of data.rows) {
-            const temp = {
-                id: value.id,
-                phone: value.phone,
-                email: value.email,
-                name: value.name
-            }
-            output[value.id] = temp;
-        }
-        res.locals.users = output;
-        next();
-      })
-      .catch(err =>
-        next({
-          log: `Express error handler caught getUsers error ${err}`,
-          status: 400,
-          message: { err: `${err}` }
-        })
-      );
-  };
+  const query = `SELECT * FROM users WHERE page_id = $1`;
+  db.query(query, [res.locals.locationID])
+    .then(data => {
+      const output = {};
+      for (value of data.rows) {
+        const temp = {
+          id: value.id,
+          phone: value.phone,
+          email: value.email,
+          name: value.name,
+        };
+        output[value.id] = temp;
+      }
+      res.locals.users = output;
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: `Express error handler caught getUsers error ${err}`,
+        status: 400,
+        message: { err: `${err}` },
+      });
+    });
+};
 
 module.exports = mainController;

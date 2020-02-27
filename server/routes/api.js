@@ -1,6 +1,8 @@
 const express = require('express');
 
 const mainController = require('../controllers/mainController.js');
+const postController = require('../controllers/postController.js');
+const deleteController = require('../controllers/deleteController.js');
 
 const router = express.Router();
 
@@ -14,13 +16,39 @@ router.get(
     const response = {
       information: res.locals.info,
       list: res.locals.list,
-      users: res.locals.users
+      users: res.locals.users,
     };
     res.status(200).json(response);
-  }
+  },
 );
 
-//route all post requests to /api/ here
-router.post('/', (req, res) => res.status(200));
+//route post requests to /api/items/ here
+router.post(
+  '/items',
+  postController.getPageUnique,
+  postController.postUpdate,
+  postController.postNew,
+  (req, res) => res.sendStatus(200),
+);
+
+//route delete requests to /api/users/ here
+router.delete('/items', deleteController.deleteItem, (req, res) =>
+  res.sendStatus(200),
+);
+
+//route post requests to /api/pages/ here
+router.post('/pages', postController.postNewPage, (req, res) =>
+  res.status(200).json(res.locals.locationID),
+);
+
+//route post requests to /api/users/ here
+router.post('/users', postController.postNewUser, (req, res) =>
+  res.sendStatus(200),
+);
+
+//route delete requests to /api/users/ here
+router.delete('/users', deleteController.deleteUser, (req, res) =>
+  res.sendStatus(200),
+);
 
 module.exports = router;
