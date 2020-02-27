@@ -31,9 +31,14 @@ router.post(
 );
 
 //route post requests to /api/pages/ here
-router.post(
-  '/pages', postController.postNewPage,
-  (req, res) => res.sendStatus(200),
+router.post('/pages', postController.postNewPage, (req, res) =>
+  res.status(200).json(res.locals.locationID),
 );
+
+//route post requests to /api/pages/ here
+router.post('/users', postController.postNewUser, (req, res) =>
+  res.sendStatus(200),
+);
+
 
 module.exports = router;

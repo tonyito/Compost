@@ -1,5 +1,5 @@
 const db = require('../models/compostModels');
-const { v4 }= require('uuid');
+const { v4 } = require('uuid');
 
 const postController = {};
 
@@ -9,15 +9,15 @@ postController.getPageUnique = (req, res, next) => {
   db.query(query, [req.body.location])
     .then(data => {
       res.locals.locationID = data.rows[0].id;
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
+    .catch(err => {
+      return next({
         log: `Express error handler caught getPageUnique from postController error ${err}`,
         status: 400,
         message: { err: `${err}` },
-      }),
-    );
+      });
+    });
 };
 
 //controller to POST changes to the database
@@ -52,9 +52,9 @@ postController.postNew = async (req, res, next) => {
         [res.locals.locationID, value.user, value.name],
       );
     }
-    next();
+    return next();
   } catch (err) {
-    next({
+    return next({
       log: `Express error handler caught postNew error ${err}`,
       status: 400,
       message: { err: `${err}` },
@@ -67,17 +67,40 @@ postController.postNewPage = (req, res, next) => {
   const query = `INSERT INTO pages (param, active, location, brief, title, date) 
                 VALUES ($1, true, $2, $3, $4, $5)`;
   res.locals.locationID = v4();
-  db.query(query, [res.locals.locationID, req.body.location, req.body.brief, req.body.title, req.body.date])
+  db.query(query, [
+    res.locals.locationID,
+    req.body.location,
+    req.body.brief,
+    req.body.title,
+    req.body.date,
+  ])
     .then(() => {
-      next();
+      return next();
     })
-    .catch(err =>
-      next({
+    .catch(err => {
+      return next({
         log: `Express error handler caught getPageUnique from postNewPage error ${err}`,
         status: 400,
         message: { err: `${err}` },
-      }),
-    );
+      });
+    });
+};
+
+//controller to POST new user to the database
+postController.postNewUser = (req, res, next) => {
+  const query = `INSERT INTO pages (param, active, location, brief, title, date) 
+                VALUES ($1, true, $2, $3, $4, $5)`;
+  db.query(query)
+    .then(() => {
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: `Express error handler caught getPageUnique from postNewPage error ${err}`,
+        status: 400,
+        message: { err: `${err}` },
+      });
+    });
 };
 
 module.exports = postController;
