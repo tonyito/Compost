@@ -41,10 +41,10 @@ import { Form } from 'react-bootstrap';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
-  const [newInputsLength, setNewInputs] = useState(1);
+  const [newInputsLength, setNewInputs] = useState(0);
   const [grabData, setGrabData] = useState(false);
   const [changedRows, setChangedRows] = useState({});
-  const [addedRows, setAddedRows] = useState({});
+  const [addedRows, setAddedRows] = useState([]);
 
   let { id } = useParams();
 
@@ -109,7 +109,7 @@ const Compost = () => {
     );
   }
 
-  const row = (
+  const row = (length) => (
     <div
       style={{
         display: 'flex',
@@ -120,23 +120,32 @@ const Compost = () => {
     >
       <TextField
         style={{ width: '70vh' }}
-        id="outlined-basic"
+        id={`newRow${newInputsLength}item`}
         variant="outlined"
         placeholder="New Item"
         onChange={e => {
           if (e.target.value.length === 1) {
-            setNewInputs(newInputsLength + 1);
             newInputs.push(row);
-            changedRow(item[i]);
+            const newRows = Object.assign({}, addedRows)
+            newRows[newInputsLength] = true;
+            setAddedRows(newRows);
+            setNewInputs(newInputsLength + 1);
+            // const newItem = addedRows.push({ id: `newRow${newInputsLength}item` });
+            // setAddedRows(newItem);
+            // console.log(addedRows);
           }
+        }}
+        inputProps={{
+          id: `newRow${length}item`
         }}
       />
       <FormControl>
         <InputLabel>Name</InputLabel>
         <Select
           style={{ width: '30vh' }}
-          labelId="demo-simple-select-label"
-          id={`responsibility`}
+          inputProps={{
+            id: 'newRow' + length + 'user',
+          }}
         >
           {menuItem}
         </Select>
@@ -144,10 +153,10 @@ const Compost = () => {
     </div>
   );
   const newInputs = [];
-  for (let i = 0; i < newInputsLength; i++) {
-    newInputs.push(row);
+  for (let i = 0; i <= newInputsLength; i++) {
+    newInputs.push(row(i));
   }
-
+  console.log(addedRows);
   const handleSubmit = event => {
     event.preventDefault();
     // to keep track of updated items
@@ -162,13 +171,14 @@ const Compost = () => {
     }
     // to keep track of newly added items;
     const newItems = [];
+    console.log(event.target.newRow0user);
     for (let i in addedRows) {
       newItems.push({
-        id: event.target[`row${i}item`].getAttribute('itemID'),
-        user: event.target[`row${i}user`].value,
-        itemName: event.target[`row${i}item`].value,
+        user: Number(event.target[`newRow${i}user`].value),
+        itemName: event.target[`newRow${i}item`].value,
       });
     }
+    console.log(newItems)
     // add fetch here
   };
   return (
