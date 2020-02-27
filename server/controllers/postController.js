@@ -91,7 +91,7 @@ postController.postNewPage = (req, res, next) => {
 postController.postNewUser = (req, res, next) => {
   const query = `INSERT INTO users (page_id, name, color, active, phone, email) 
                 VALUES ($1, $2, $3, true, $4, $5)`;
-  db.query(query, [req.body.location, req.body.name, req.body.color, req.body.phone, req.body.email])
+  db.query(query, [res.locals.locationID, req.body.name, req.body.color, req.body.phone, req.body.email])
     .then(() => {
       return next();
     })
