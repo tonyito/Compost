@@ -59,6 +59,23 @@ const Compost = () => {
     });
   };
 
+  const handleUserEdit = (event, row) => {
+    event.persist();
+    const newChangedRow = Object.assign({}, changedRows);
+    newChangedRow[row] = true;
+    setChangedRows(newChangedRow);
+    setState(oldState => {
+      const list = oldState.list.slice();
+      list[row] = {
+        ...list[row],
+        user: event.target.value,
+      };
+      return {
+        ...oldState,
+        list,
+      };
+    });
+  };
   for (const i in state.list) {
     // console.log(i);
     list.push(
@@ -90,6 +107,7 @@ const Compost = () => {
             inputProps={{
               id: `row${i}user`,
             }}
+            onChange={e => handleUserEdit(e, i)}
           >
             {menuItem}
           </Select>
@@ -145,6 +163,7 @@ const Compost = () => {
           onChange={e => {
             e.persist();
             setNewInputs(newInputs => {
+
               const newInputsCopy = newInputs.slice();
               newInputsCopy[length] = {
                 ...newInputsCopy[length],
