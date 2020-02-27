@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Redirect, useHistory } from 'react-router-dom';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
@@ -81,7 +80,7 @@ const Compost = () => {
     );
   }
 
-  const row = (length) => (
+  const row = length => (
     <div
       style={{
         display: 'flex',
@@ -98,14 +97,14 @@ const Compost = () => {
         onChange={e => {
           if (e.target.value.length === 1) {
             newInputs.push(row);
-            const newRows = Object.assign({}, addedRows)
+            const newRows = Object.assign({}, addedRows);
             newRows[newInputsLength] = true;
             setAddedRows(newRows);
             setNewInputs(newInputsLength + 1);
           }
         }}
         inputProps={{
-          id: `newRow${length}item`
+          id: `newRow${length}item`,
         }}
       />
       <FormControl>
@@ -151,13 +150,13 @@ const Compost = () => {
     fetch('/api/items', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         updatedItems,
         newItems,
-        location: id
-      })
+        location: id,
+      }),
     })
       .then(res => res.json())
       .then(data => {
@@ -166,7 +165,6 @@ const Compost = () => {
         setAddedRows([]);
         setChangedRows({});
       });
-
   };
   return (
     <>
@@ -175,7 +173,6 @@ const Compost = () => {
           display: 'flex',
           flexDirection: 'column',
           minHeight: '90vh',
-          backgroundColor: '#eeeeee',
         }}
       >
         <div
@@ -189,7 +186,7 @@ const Compost = () => {
           }}
         >
           <Typography variant="h1" component="h2" gutterBottom>
-            {state.information.title}
+            <b>{state.information.title}</b>
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             {state.information.brief}

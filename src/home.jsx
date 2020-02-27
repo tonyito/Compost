@@ -2,24 +2,20 @@ import React, { useState } from 'react';
 import './styles.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 import LinkDisplay from './components/LinkDisplay';
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import LocationSearchInput from './components/Search';
 
 const useStyles = makeStyles({
   root: {
     width: '50em',
-    height: 440,
+    height: '30em',
   },
   title: {
     fontSize: 26,
@@ -49,7 +45,8 @@ const Home = () => {
     const obj = {
       title: event.target.title.value,
       brief: event.target.description.value,
-      location: event.target.location.value,
+      location: event.target.address.value,
+      locationTitle: event.target.location.value,
       date: `${moment(startDate).format('MM/DD/YYYY')} - ${moment(
         endDate,
       ).format('MM/DD/YYYY')}`,
@@ -67,7 +64,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#eeeeee' }}>
+    <div>
       <Typography variant="h3" align="center">
         {'Compost'}
       </Typography>
@@ -107,14 +104,15 @@ const Home = () => {
                 />
                 <TextField
                   id="location"
-                  style={{ width: '30vw', marginBottom: '10px' }}
+                  style={{ width: '30vw' }}
                   variant="outlined"
-                  placeholder="Location"
+                  placeholder="Location Title"
                   required
                 />
+                <LocationSearchInput />
                 <div style={{ display: 'flex' }}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
+                    <DatePicker
                       disableToolbar
                       variant="inline"
                       format="MM/dd/yyyy"
@@ -123,11 +121,9 @@ const Home = () => {
                       minDate={new Date()}
                       label="Start Date"
                       value={startDate}
-                      onChange={value => {
-                        setStartDate(value);
-                      }}
+                      onChange={setStartDate}
                     />
-                    <KeyboardDatePicker
+                    <DatePicker
                       disableToolbar
                       variant="inline"
                       format="MM/dd/yyyy"
@@ -136,9 +132,7 @@ const Home = () => {
                       minDate={new Date()}
                       label="End Date"
                       value={endDate}
-                      onChange={value => {
-                        setEndDate(value);
-                      }}
+                      onChange={setEndDate}
                     />
                   </MuiPickersUtilsProvider>
                 </div>
