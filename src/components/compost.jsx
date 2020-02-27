@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core';
+import { Form } from 'react-bootstrap';
 
 // const state = {
 //   information: {
@@ -42,7 +43,8 @@ const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
   const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
-  const [changedRow, setChangedRow] = useState({});
+  const [changedRows, setChangedRows] = useState({});
+  const [addedRows, setAddedRows] = useState({});
 
   let { id } = useParams();
 
@@ -63,13 +65,14 @@ const Compost = () => {
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>,
     );
   }
-  const handleTextEdit = event => {
-    setChangedRow(event.target.id: true)
-    console.log('this is handleTextEdit', event.target.id);
+  const handleTextEdit = (event, row) => {
+    const newChangedRow = Object.assign({}, changedRows);
+    newChangedRow[row] = true;
+    setChangedRows(newChangedRow);
   };
 
-
   for (let i in state.list) {
+    // console.log(i);
     list.push(
       <div
         style={{
@@ -81,18 +84,23 @@ const Compost = () => {
       >
         <TextField
           style={{ width: '70vh' }}
-          id={`item${i}`}
+          id={`row${i}item`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
-          onChange={handleTextEdit}
+          onChange={e => handleTextEdit(e, i)}
+          inputProps={{
+            itemID: state.list[i].id,
+          }}
         />
+
         <FormControl>
-          <InputLabel htmlFor={`user${i}`}>Name</InputLabel>
+          <InputLabel>Name</InputLabel>
           <Select
             style={{ width: '30vh' }}
-            labelId={`user${i}`}
-            id={`user${i}`}
             defaultValue={state.list[i].user}
+            inputProps={{
+              id: 'row' + i + 'user',
+            }}
           >
             {menuItem}
           </Select>
@@ -142,18 +150,27 @@ const Compost = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const result = [];
-    for (let i in changedRow) {
-      result.push({
-        id: i,
-        user: event.target[i].value,
-        itemName: event.target[`item${i}`].value,
+    // to keep track of updated items
+    const updatedItems = [];
+    // console.log(event.target);
+    for (let i in changedRows) {
+      updatedItems.push({
+        id: event.target[`row${i}item`].getAttribute('itemID'),
+        user: event.target[`row${i}user`].value,
+        itemName: event.target[`row${i}item`].value,
       });
     }
-    // console.log('this is event target', event.target.user1);
+    // to keep track of newly added items;
+    const newItems = [];
+    for (let i in addedRows) {
+      newItems.push({
+        id: event.target[`row${i}item`].getAttribute('itemID'),
+        user: event.target[`row${i}user`].value,
+        itemName: event.target[`row${i}item`].value,
+      });
+    }
+    // add fetch here
   };
-
-  
   return (
     <>
       <div
