@@ -234,6 +234,9 @@ const Compost = () => {
             {state.information.date}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
+            {state.information.location_title}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
             {state.information.location}
           </Typography>
           <div
@@ -270,7 +273,13 @@ const Compost = () => {
           </Button>
         </form>
       </div>
-      <AddModal show={showAddModal} toggleAddModal={toggleAddModal} page={id} setGrabData={setGrabData} grabData={grabData} />
+      <AddModal
+        show={showAddModal}
+        toggleAddModal={toggleAddModal}
+        page={id}
+        setGrabData={setGrabData}
+        grabData={grabData}
+      />
     </>
   );
 };
