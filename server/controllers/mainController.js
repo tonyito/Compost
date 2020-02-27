@@ -57,7 +57,7 @@ mainController.getList = (req, res, next) => {
 
 //controller to get users from a selected page
 mainController.getUsers = (req, res, next) => {
-  const query = `SELECT * FROM users WHERE page_id = $1`;
+  const query = `SELECT * FROM users WHERE page_id = $1 AND active = true`;
   db.query(query, [res.locals.locationID])
     .then(data => {
       const output = {};
