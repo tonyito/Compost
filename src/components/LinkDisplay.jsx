@@ -13,14 +13,16 @@ const useStyles = makeStyles(theme => ({
 
 const LinkDisplay = props => {
   const classes = useStyles();
-
+  const url = `http://${window.location.host}/page/${props.url}`;
   const copyFunction = () => {
     const textArea = document.querySelector('.linkText');
+    textArea.value = url;
     textArea.focus();
     textArea.select();
     textArea.setSelectionRange(0, 99999); /*For mobile devices*/
     document.execCommand('copy');
   };
+
   return (
     <div>
       <Dialog
@@ -34,17 +36,13 @@ const LinkDisplay = props => {
             id="alert-dialog-slide-description"
             style={{ display: 'flex' }}
           >
-            <a
-              className={classes.link}
-              href={`http://${window.location.host}/page/${props.url}`}
-            >
-              <Typography className="pageLink">{`http://${window.location.host}/page/${props.url}`}</Typography>
+            <a className={classes.link} href={url}>
+              <Typography>{url}</Typography>
             </a>
-            <FileCopyIcon onClick={copyFunction} color="white" />
+            <FileCopyIcon onClick={copyFunction} style={{ color: 'white' }} />
             <textarea
               className="linkText"
               style={{ height: '0.01x', width: '0.01px' }}
-              value={`http://${window.location.host}/page/${props.url}`}
             />
           </DialogContentText>
         </DialogContent>
