@@ -25,6 +25,8 @@ const Compost = () => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
+        // console.log('this is data from use effect', data);
+        // console.log('this is addedRows', addedRows);
         setState(data);
       })
       .catch(err => {
@@ -184,8 +186,8 @@ const Compost = () => {
       });
     }
     // add fetch here
-    console.log('new items', newItems);
-    console.log('updated items', updatedItems);
+    // console.log('new items', newItems);
+    // console.log('updated items', updatedItems);
     fetch('/api/items', {
       method: 'POST',
       headers: {
@@ -274,8 +276,8 @@ const Compost = () => {
           </Button>
         </form>
       </div>
-      <AddModal show={showAddModal} toggleAddModal={toggleAddModal} />
       <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} />
+      <AddModal show={showAddModal} toggleAddModal={toggleAddModal} page={id} setGrabData={setGrabData} grabData={grabData} />
     </>
   );
 };

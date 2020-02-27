@@ -33,7 +33,7 @@ router.post(
 
 //route delete requests to /api/users/ here
 router.delete('/items', deleteController.deleteItem, (req, res) =>
-  res.sendStatus(200),
+  res.status(200).json('success'),
 );
 
 //route post requests to /api/pages/ here
@@ -42,13 +42,14 @@ router.post('/pages', postController.postNewPage, (req, res) =>
 );
 
 //route post requests to /api/users/ here
-router.post('/users', postController.postNewUser, (req, res) =>
-  res.sendStatus(200),
+router.post('/users', postController.getPageUnique, postController.postNewUser, (req, res) =>
+  res.status(200).json('success'),
 );
 
 //route delete requests to /api/users/ here
+//this will actually inactivate users, not delete
 router.delete('/users', deleteController.deleteUser, (req, res) =>
-  res.sendStatus(200),
+  res.status(200).json('success'),
 );
 
 module.exports = router;
