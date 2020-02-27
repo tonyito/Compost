@@ -30,10 +30,6 @@ const Compost = () => {
       });
   }, [grabData]);
 
-  if (invalidPage) {
-    return <Redirect to="/" />;
-  }
-
   const menuItem = [];
   const list = [];
 
