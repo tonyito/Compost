@@ -31,6 +31,11 @@ router.post(
   (req, res) => res.json('dfdfdjfdjfdj'),
 );
 
+//route delete requests to /api/users/ here
+router.delete('/items', deleteController.deleteItem, (req, res) =>
+  res.sendStatus(200),
+);
+
 //route post requests to /api/pages/ here
 router.post('/pages', postController.postNewPage, (req, res) =>
   res.status(200).json(res.locals.locationID),
