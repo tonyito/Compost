@@ -26,7 +26,7 @@ const Compost = () => {
       })
       .catch(err => {
         console.log(err);
-        setRedirect(true);
+return window.location.replace('/');
       });
   }, [grabData]);
 
