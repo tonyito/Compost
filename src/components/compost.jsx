@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import AddModal from './AddModal';
+import DeleteModal from './DeleteModal';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
@@ -16,6 +17,7 @@ const Compost = () => {
   const [changedRows, setChangedRows] = useState({});
   const [addedRows, setAddedRows] = useState([]);
   const [showAddModal, toggleAddModal] = useState(false);
+  const [showDeleteModal, toggleDeleteModal] = useState(false);
 
   const { id } = useParams();
 
@@ -23,8 +25,6 @@ const Compost = () => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
-        console.log('this is data from use effect', data);
-        console.log('this is addedRows', addedRows);
         setState(data);
       })
       .catch(err => {
@@ -252,7 +252,11 @@ const Compost = () => {
                 add user
               </Button>
             </div>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary"
+              onClick={() => {
+                toggleDeleteModal(true);
+              }}
+            >
               delete user
             </Button>
           </div>
@@ -271,6 +275,7 @@ const Compost = () => {
         </form>
       </div>
       <AddModal show={showAddModal} toggleAddModal={toggleAddModal} />
+      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} />
     </>
   );
 };
