@@ -27,7 +27,7 @@ const Compost = () => {
       })
       .catch(err => {
         console.log(err);
-return window.location.replace('/');
+        return window.location.replace('/');
       });
   }, [grabData]);
 
@@ -49,12 +49,12 @@ return window.location.replace('/');
       list[row] = {
         ...list[row],
         itemName: event.target.value,
-      }
+      };
       return {
         ...oldState,
-        list
-      }
-    })
+        list,
+      };
+    });
   };
 
   for (const i in state.list) {
@@ -96,7 +96,7 @@ return window.location.replace('/');
     );
   }
 
-  const row = (length) => (
+  const row = length => (
     <div
       style={{
         display: 'flex',
@@ -118,9 +118,9 @@ return window.location.replace('/');
             newInputsCopy[length] = {
               ...newInputsCopy[length],
               itemName: e.target.value,
-            }
+            };
             return newInputsCopy;
-          })
+          });
           if (e.target.value.length === 1) {
             setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
             const newRows = Object.assign({}, addedRows);
@@ -129,7 +129,7 @@ return window.location.replace('/');
           }
         }}
         inputProps={{
-          id: `newRow${length}item`
+          id: `newRow${length}item`,
         }}
       />
       <FormControl>
@@ -147,9 +147,9 @@ return window.location.replace('/');
               newInputsCopy[length] = {
                 ...newInputsCopy[length],
                 user: e.target.value,
-              }
+              };
               return newInputsCopy;
-            })
+            });
           }}
         >
           {menuItem}
@@ -187,13 +187,13 @@ return window.location.replace('/');
     fetch('/api/items', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         updatedItems,
         newItems,
-        location: id
-      })
+        location: id,
+      }),
     })
       .then(res => res.json())
       .then(data => {
@@ -202,11 +202,6 @@ return window.location.replace('/');
         setAddedRows([]);
         setChangedRows({});
       });
-
-    // document.getElementById('newRow0item').value = '';
-    console.log('BEFORE', document.getElementById('newRow0user').value)
-    document.getElementById('newRow0user').value = 'sdfsdkljfksdlfjsdkl';
-    console.log('AFTER', document.getElementById('newRow0user').value)
   };
   return (
     <>
@@ -215,7 +210,6 @@ return window.location.replace('/');
           display: 'flex',
           flexDirection: 'column',
           minHeight: '90vh',
-          backgroundColor: '#eeeeee',
         }}
       >
         <div
@@ -229,7 +223,7 @@ return window.location.replace('/');
           }}
         >
           <Typography variant="h1" component="h2" gutterBottom>
-            {state.information.title}
+            <b>{state.information.title}</b>
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             {state.information.brief}

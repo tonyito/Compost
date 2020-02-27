@@ -2,24 +2,19 @@ import React, { useState } from 'react';
 import './styles.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import LinkDisplay from './components/LinkDisplay';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import LocationSearchInput from './components/Search';
 
 const useStyles = makeStyles({
   root: {
     width: '50em',
-    height: 500,
   },
   title: {
     fontSize: 26,
@@ -49,7 +44,8 @@ const Home = () => {
     const obj = {
       title: event.target.title.value,
       brief: event.target.description.value,
-      location: event.target.location.value,
+      location: event.target.address.value,
+      locationTitle: event.target.location.value,
       date: `${moment(startDate).format('MM/DD/YYYY')} - ${moment(
         endDate,
       ).format('MM/DD/YYYY')}`,
@@ -86,11 +82,7 @@ const Home = () => {
         }}
       >
         <div style={{ marginBottom: '25px' }}>
-          <Card
-            className={classes.root}
-            variant="outlined"
-            style={{ backgroundColor: '#eeeeee' }}
-          >
+          <Card className={classes.root}>
             <form onSubmit={handleSubmit}>
               <CardContent
                 style={{
@@ -124,14 +116,15 @@ const Home = () => {
                 />
                 <TextField
                   id="location"
-                  style={{ width: '30vw', marginBottom: '10px' }}
+                  style={{ width: '30vw', marginBottom: '15px' }}
                   variant="outlined"
-                  placeholder="Location"
+                  placeholder="Location Title"
                   required
                 />
+                <LocationSearchInput />
                 <div style={{ display: 'flex' }}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
+                    <DatePicker
                       disableToolbar
                       variant="inline"
                       format="MM/dd/yyyy"
@@ -140,11 +133,9 @@ const Home = () => {
                       minDate={new Date()}
                       label="Start Date"
                       value={startDate}
-                      onChange={value => {
-                        setStartDate(value);
-                      }}
+                      onChange={setStartDate}
                     />
-                    <KeyboardDatePicker
+                    <DatePicker
                       disableToolbar
                       variant="inline"
                       format="MM/dd/yyyy"
@@ -153,10 +144,7 @@ const Home = () => {
                       minDate={new Date()}
                       label="End Date"
                       value={endDate}
-                      onChange={value => {
-                        setEndDate(value);
-                      }}
-                      style={{ marginLeft: '10px' }}
+                      onChange={setEndDate}
                     />
                   </MuiPickersUtilsProvider>
                 </div>
@@ -173,14 +161,12 @@ const Home = () => {
             </form>
           </Card>
         </div>
-        <div style={{ backgroundColor: '#eeeeee' }}>
+        <div>
           <Card
             style={{
               width: '50em',
               height: '375px',
-              backgroundColor: '#eeeeee',
             }}
-            variant="outlined"
           ></Card>
         </div>
       </div>
