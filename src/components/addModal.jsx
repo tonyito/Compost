@@ -10,9 +10,6 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '35em',
-  },
   modal: {
     display: 'flex',
     alignItems: 'center',
@@ -36,7 +33,7 @@ const AddModal = props => {
       email: event.target.email.value,
       phone: event.target.phone.value,
       active: true,
-      color: 'black'
+      color: 'black',
     };
     props.toggleAddModal(false);
     fetch('/api/users', {
@@ -64,7 +61,7 @@ const AddModal = props => {
         props.toggleAddModal(false);
       }}
     >
-      <Card className={classes.root}>
+      <Card style={{ width: '35rem' }}>
         <CardContent
           style={{
             display: 'flex',
