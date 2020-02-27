@@ -2,6 +2,7 @@ const express = require('express');
 
 const mainController = require('../controllers/mainController.js');
 const postController = require('../controllers/postController.js');
+const deleteController = require('../controllers/deleteController.js');
 
 const router = express.Router();
 
@@ -35,10 +36,14 @@ router.post('/pages', postController.postNewPage, (req, res) =>
   res.status(200).json(res.locals.locationID),
 );
 
-//route post requests to /api/pages/ here
+//route post requests to /api/users/ here
 router.post('/users', postController.postNewUser, (req, res) =>
   res.sendStatus(200),
 );
 
+//route delete requests to /api/users/ here
+router.delete('/users', deleteController.deleteUser, (req, res) =>
+  res.sendStatus(200),
+);
 
 module.exports = router;
