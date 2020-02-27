@@ -2,26 +2,37 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
+import { Typography, Slide, makeStyles } from '@material-ui/core/';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const useStyles = makeStyles(theme => ({
+  link: {
+    color: 'white',
+  },
+}));
 
 const LinkDisplay = props => {
+  const classes = useStyles();
   return (
     <div>
       <Dialog
         open={props.open}
-        TransitionComponent={Transition}
-        keepMounted
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {'http://' + window.location.host + '/page/' + props.url}
+          <DialogContentText
+            id="alert-dialog-slide-description"
+            style={{ display: 'flex' }}
+          >
+            <a
+              className={classes.link}
+              href={`http://${window.location.host}/page/${props.url}`}
+            >
+              <Typography>{`http://${window.location.host}/page/${props.url}`}</Typography>
+            </a>
+            <FileCopyIcon color="white" />
           </DialogContentText>
         </DialogContent>
       </Dialog>
