@@ -64,7 +64,7 @@ postController.postNew = async (req, res, next) => {
 
 //controller to POST new page to the database
 postController.postNewPage = (req, res, next) => {
-  const query = `INSERT INTO pages (param, active, location, brief, title, date) 
+  const query = `INSERT INTO pages (param, active, location, brief, title, date, location_title) 
                 VALUES ($1, true, $2, $3, $4, $5)`;
   res.locals.locationID = v4().slice(0,6);
   db.query(query, [
@@ -73,6 +73,7 @@ postController.postNewPage = (req, res, next) => {
     req.body.brief,
     req.body.title,
     req.body.date,
+    req.body.location_title
   ])
     .then(() => {
       return next();

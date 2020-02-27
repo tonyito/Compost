@@ -12,6 +12,7 @@ mainController.getPageUnique = (req, res, next) => {
         brief: data.rows[0].brief,
         title: data.rows[0].title,
         location: data.rows[0].location,
+        location_title: data.rows[0].location_title
       };
       res.locals.locationID = data.rows[0].id;
       return next();
