@@ -31,28 +31,31 @@ const AddModal = props => {
   const handleSubmit = event => {
     event.preventDefault();
     const addUserBody = {
-      page_id: props.page,
+      location: props.page,
       name: event.target.name.value,
       email: event.target.email.value,
       phone: event.target.phone.value,
+      active: true,
+      color: 'black'
     };
     props.toggleAddModal(false);
-    // fetch('/api/items', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(addUserBody),
-    // })
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     //close modal
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(addUserBody),
+    })
+      .then(res => res.json())
+      .then(data => {
+        //close modal
+        props.setGrabData(!props.grabData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
-
+  // console.log(props.page);
   return (
     <Modal
       className={classes.modal}

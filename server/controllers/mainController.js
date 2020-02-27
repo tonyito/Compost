@@ -12,6 +12,7 @@ mainController.getPageUnique = (req, res, next) => {
         brief: data.rows[0].brief,
         title: data.rows[0].title,
         location: data.rows[0].location,
+        location_title: data.rows[0].location_title
       };
       res.locals.locationID = data.rows[0].id;
       return next();
@@ -56,7 +57,7 @@ mainController.getList = (req, res, next) => {
 
 //controller to get users from a selected page
 mainController.getUsers = (req, res, next) => {
-  const query = `SELECT * FROM users WHERE page_id = $1`;
+  const query = `SELECT * FROM users WHERE page_id = $1 AND active = true`;
   db.query(query, [res.locals.locationID])
     .then(data => {
       const output = {};
