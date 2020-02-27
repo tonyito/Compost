@@ -43,6 +43,7 @@
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.6.3",
+    "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "save": "^2.4.0",
     "typeface-roboto": "0.0.75",

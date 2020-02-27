@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
-import { DatePicker } from '@material-ui/pickers';
 import LinkDisplay from './components/LinkDisplay';
 
 const useStyles = makeStyles({
