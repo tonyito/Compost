@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Home from './home.jsx';
-import Compost from "./components/compost.jsx"
+import Compost from './components/compost.jsx';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import 'typeface-roboto';
@@ -12,7 +12,7 @@ const Index = () => {
       <Router>
         <Switch>
           <Route path="/page/:id" component={Compost} />
-          <Route path="/" component={Home}/>
+          <Route path="/" component={Home} />
         </Switch>
       </Router>
     </div>
