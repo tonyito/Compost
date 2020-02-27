@@ -15,7 +15,6 @@ import LocationSearchInput from './components/Search';
 const useStyles = makeStyles({
   root: {
     width: '50em',
-    height: '30em',
   },
   title: {
     fontSize: 26,
@@ -64,7 +63,14 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage:
+          'url(' +
+          'https://www.pixelstalk.net/wp-content/uploads/2016/04/Yosemite-wallpaper-night-wallpaper-HD.jpg' +
+          ')',
+      }}
+    >
       <Typography variant="h3" align="center">
         {'Compost'}
       </Typography>
@@ -76,9 +82,15 @@ const Home = () => {
         }}
       >
         <div style={{ marginBottom: '25px' }}>
-          <Card className={classes.root} variant="outlined">
+          <Card className={classes.root}>
             <form onSubmit={handleSubmit}>
-              <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+              <CardContent
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <Typography
                   className={classes.title}
                   color="textPrimary"
@@ -104,7 +116,7 @@ const Home = () => {
                 />
                 <TextField
                   id="location"
-                  style={{ width: '30vw' }}
+                  style={{ width: '30vw', marginBottom: '15px' }}
                   variant="outlined"
                   placeholder="Location Title"
                   required
@@ -150,7 +162,12 @@ const Home = () => {
           </Card>
         </div>
         <div>
-          <Card className={classes.root} variant="outlined"></Card>
+          <Card
+            style={{
+              width: '50em',
+              height: '375px',
+            }}
+          ></Card>
         </div>
       </div>
     </div>

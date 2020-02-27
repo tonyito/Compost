@@ -43,11 +43,10 @@ class Search extends React.Component {
             <div
               className="autocomplete-dropdown-container"
               style={{
-                border: '1px black',
                 zIndex: '2',
                 position: 'fixed',
                 borderRadius: '5px',
-                backgroundColor: 'white',
+                backgroundColor: '#b5b5b5',
               }}
             >
               {loading && <div>Loading...</div>}
@@ -58,13 +57,11 @@ class Search extends React.Component {
                 // inline style for demonstration purpose
                 const style = suggestion.active
                   ? {
-                      backgroundColor: '#fafafa',
                       cursor: 'pointer',
                       borderRadius: '5px',
                       margin: '5px 5px 5px 5px',
                     }
                   : {
-                      backgroundColor: '#ffffff',
                       cursor: 'pointer',
                       borderRadius: '5px',
                       margin: '5px 5px 5px 5px',
