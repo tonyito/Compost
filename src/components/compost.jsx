@@ -11,10 +11,10 @@ import { Redirect, useHistory } from 'react-router-dom';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
-  const [newInputsLength, setNewInputs] = useState(1);
+  const [newInputsLength, setNewInputs] = useState(0);
   const [grabData, setGrabData] = useState(false);
   const [changedRows, setChangedRows] = useState({});
-  const [addedRows, setAddedRows] = useState({});
+  const [addedRows, setAddedRows] = useState([]);
 
   const { id } = useParams();
   useEffect(() => {
@@ -28,7 +28,7 @@ const Compost = () => {
         console.log(err);
         return window.location.replace('/');
       });
-  }, []);
+  }, [grabData]);
 
   const menuItem = [];
   const list = [];
@@ -81,7 +81,7 @@ const Compost = () => {
     );
   }
 
-  const row = (
+  const row = (length) => (
     <div
       style={{
         display: 'flex',
@@ -92,23 +92,29 @@ const Compost = () => {
     >
       <TextField
         style={{ width: '70vh' }}
-        id="outlined-basic"
+        id={`newRow${newInputsLength}item`}
         variant="outlined"
         placeholder="New Item"
         onChange={e => {
           if (e.target.value.length === 1) {
-            setNewInputs(newInputsLength + 1);
             newInputs.push(row);
-            changedRow(item[i]);
+            const newRows = Object.assign({}, addedRows)
+            newRows[newInputsLength] = true;
+            setAddedRows(newRows);
+            setNewInputs(newInputsLength + 1);
           }
+        }}
+        inputProps={{
+          id: `newRow${length}item`
         }}
       />
       <FormControl>
         <InputLabel>Name</InputLabel>
         <Select
           style={{ width: '30vh' }}
-          labelId="demo-simple-select-label"
-          id="responsibility"
+          inputProps={{
+            id: 'newRow' + length + 'user',
+          }}
         >
           {menuItem}
         </Select>
@@ -116,32 +122,51 @@ const Compost = () => {
     </div>
   );
   const newInputs = [];
-  for (let i = 0; i < newInputsLength; i++) {
-    newInputs.push(row);
+  for (let i = 0; i <= newInputsLength; i++) {
+    newInputs.push(row(i));
   }
 
   const handleSubmit = event => {
     event.preventDefault();
     // to keep track of updated items
     const updatedItems = [];
-    // console.log(event.target);
-    for (const i in changedRows) {
+    for (let i in changedRows) {
       updatedItems.push({
         id: event.target[`row${i}item`].getAttribute('itemID'),
         user: event.target[`row${i}user`].value,
-        itemName: event.target[`row${i}item`].value,
+        name: event.target[`row${i}item`].value,
       });
     }
     // to keep track of newly added items;
     const newItems = [];
     for (const i in addedRows) {
       newItems.push({
-        id: event.target[`row${i}item`].getAttribute('itemID'),
-        user: event.target[`row${i}user`].value,
-        itemName: event.target[`row${i}item`].value,
+        user: Number(event.target[`newRow${i}user`].value),
+        name: event.target[`newRow${i}item`].value,
       });
     }
     // add fetch here
+    console.log('new items', newItems);
+    console.log('updated items', updatedItems);
+    fetch('/api/items', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        updatedItems,
+        newItems,
+        location: id
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        setGrabData(!grabData);
+        setNewInputs(0);
+        setAddedRows([]);
+        setChangedRows({});
+      });
+
   };
   return (
     <>
