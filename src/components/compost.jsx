@@ -5,7 +5,7 @@ import '../styles.scss';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { HighlightOff } from '@material-ui/icons';
+import HighlightOff from '@material-ui/icons/HighlightOff';
 import { useParams } from 'react-router';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import AddModal from './AddModal';
