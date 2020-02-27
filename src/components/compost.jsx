@@ -106,7 +106,7 @@ const deleteItem = (id) => {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
           margin: '1vh',
         }}
         className="itemRow"
@@ -120,7 +120,7 @@ const deleteItem = (id) => {
       variant="outlined"
     />
         <TextField
-          style={{ width: '70vh' }}
+          style={{ width: '70vh', paddingRight: '5vw' }}
           id={`row${i}item`}
           variant="outlined"
           // defaultValue={state.list[i].itemName}
@@ -130,8 +130,7 @@ const deleteItem = (id) => {
             itemID: state.list[i].id,
           }}
         />
-        </div>
-        <FormControl>
+        <FormControl style={{ marginTop: '6px' }}>
           <InputLabel>Name</InputLabel>
           <Select
             style={{ width: '30vh' }}
@@ -152,13 +151,13 @@ const deleteItem = (id) => {
     <div
       style={{
         display: 'flex',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         margin: '1vh',
       }}
       className="itemRow"
     >
       <TextField
-        style={{ width: '70vh' }}
+        style={{ width: '70vh', paddingRight: '5vw' }}
         id={`newRow${newInputs.length}item`}
         variant="outlined"
         placeholder="New Item"
@@ -262,7 +261,6 @@ const deleteItem = (id) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '90vh',
         }}
       >
         <div
@@ -271,11 +269,11 @@ const deleteItem = (id) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            borderBottom: 'solid',
             minHeight: '30vh',
+            paddingBottom: '10px',
           }}
         >
-          <Typography variant="h1" component="h2" gutterBottom>
+          <Typography variant="h1" component="h2">
             <b>{state.information.title}</b>
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
@@ -311,6 +309,7 @@ const deleteItem = (id) => {
             </Button>
           </div>
         </div>
+        <hr style={{ width: '80%' }} />
         <form
           style={{ display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
