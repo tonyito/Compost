@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import AddModal from './AddModal';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
@@ -14,6 +15,7 @@ const Compost = () => {
   const [grabData, setGrabData] = useState(false);
   const [changedRows, setChangedRows] = useState({});
   const [addedRows, setAddedRows] = useState([]);
+  const [showAddModal, toggleAddModal] = useState(false);
 
   const { id } = useParams();
 
@@ -240,7 +242,13 @@ const Compost = () => {
             }}
           >
             <div style={{ marginRight: '10px' }}>
-              <Button variant="contained" color="primary">
+              <Button
+                onClick={() => {
+                  toggleAddModal(true);
+                }}
+                variant="contained"
+                color="primary"
+              >
                 add user
               </Button>
             </div>
@@ -262,6 +270,7 @@ const Compost = () => {
           </Button>
         </form>
       </div>
+      <AddModal show={showAddModal} toggleAddModal={toggleAddModal} />
     </>
   );
 };
