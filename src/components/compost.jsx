@@ -44,6 +44,7 @@ const Compost = () => {
   const [newInputsLength, setNewInputs] = useState(1);
   const [grabData, setGrabData] = useState(false);
   const [changedRows, setChangedRows] = useState({});
+  const [addedRows, setAddedRows] = useState({});
 
   let { id } = useParams();
 
@@ -64,9 +65,14 @@ const Compost = () => {
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>,
     );
   }
+  const handleTextEdit = (event, row) => {
+    const newChangedRow = Object.assign({}, changedRows);
+    newChangedRow[row] = true;
+    setChangedRows(newChangedRow);
+  };
 
   for (let i in state.list) {
-    console.log(i);
+    // console.log(i);
     list.push(
       <div
         style={{
@@ -81,6 +87,7 @@ const Compost = () => {
           id={`row${i}item`}
           variant="outlined"
           defaultValue={state.list[i].itemName}
+          onChange={e => handleTextEdit(e, i)}
           inputProps={{
             itemID: state.list[i].id,
           }}
@@ -120,6 +127,7 @@ const Compost = () => {
           if (e.target.value.length === 1) {
             setNewInputs(newInputsLength + 1);
             newInputs.push(row);
+            changedRow(item[i]);
           }
         }}
       />
@@ -142,17 +150,27 @@ const Compost = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const result = [];
+    // to keep track of updated items
+    const updatedItems = [];
+    // console.log(event.target);
     for (let i in changedRows) {
-      result.push({
+      updatedItems.push({
         id: event.target[`row${i}item`].getAttribute('itemID'),
         user: event.target[`row${i}user`].value,
         itemName: event.target[`row${i}item`].value,
       });
     }
-    console.log(result);
+    // to keep track of newly added items;
+    const newItems = [];
+    for (let i in addedRows) {
+      newItems.push({
+        id: event.target[`row${i}item`].getAttribute('itemID'),
+        user: event.target[`row${i}user`].value,
+        itemName: event.target[`row${i}item`].value,
+      });
+    }
+    // add fetch here
   };
-
   return (
     <>
       <div
