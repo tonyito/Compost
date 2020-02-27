@@ -11,7 +11,7 @@ import { Redirect, useHistory } from 'react-router-dom';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
-  const [newInputsLength, setNewInputs] = useState(0);
+  const [newInputs, setNewInputs] = useState([{ itemName: '', user: '' }]);
   const [grabData, setGrabData] = useState(false);
   const [changedRows, setChangedRows] = useState({});
   const [addedRows, setAddedRows] = useState([]);
@@ -21,7 +21,8 @@ const Compost = () => {
     fetch(`/api/${id}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        console.log('this is data from use effect', data);
+        console.log('this is addedRows', addedRows);
         setState(data);
       })
       .catch(err => {
@@ -38,9 +39,21 @@ const Compost = () => {
     );
   }
   const handleTextEdit = (event, row) => {
+    event.persist();
     const newChangedRow = Object.assign({}, changedRows);
     newChangedRow[row] = true;
     setChangedRows(newChangedRow);
+    setState(oldState => {
+      const list = oldState.list.slice();
+      list[row] = {
+        ...list[row],
+        itemName: event.target.value,
+      }
+      return {
+        ...oldState,
+        list
+      }
+    })
   };
 
   for (const i in state.list) {
@@ -58,7 +71,8 @@ const Compost = () => {
           style={{ width: '70vh' }}
           id={`row${i}item`}
           variant="outlined"
-          defaultValue={state.list[i].itemName}
+          // defaultValue={state.list[i].itemName}
+          value={state.list[i].itemName}
           onChange={e => handleTextEdit(e, i)}
           inputProps={{
             itemID: state.list[i].id,
@@ -92,16 +106,25 @@ const Compost = () => {
     >
       <TextField
         style={{ width: '70vh' }}
-        id={`newRow${newInputsLength}item`}
+        id={`newRow${newInputs.length}item`}
         variant="outlined"
         placeholder="New Item"
+        value={newInputs[length].itemName}
         onChange={e => {
+          e.persist();
+          setNewInputs(newInputs => {
+            const newInputsCopy = newInputs.slice();
+            newInputsCopy[length] = {
+              ...newInputsCopy[length],
+              itemName: e.target.value,
+            }
+            return newInputsCopy;
+          })
           if (e.target.value.length === 1) {
-            newInputs.push(row);
-            const newRows = Object.assign({}, addedRows)
-            newRows[newInputsLength] = true;
+            setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
+            const newRows = Object.assign({}, addedRows);
+            newRows[newInputs.length - 1] = true;
             setAddedRows(newRows);
-            setNewInputs(newInputsLength + 1);
           }
         }}
         inputProps={{
@@ -115,15 +138,27 @@ const Compost = () => {
           inputProps={{
             id: 'newRow' + length + 'user',
           }}
+          value={newInputs[length].user}
+          onChange={e => {
+            e.persist();
+            setNewInputs(newInputs => {
+              const newInputsCopy = newInputs.slice();
+              newInputsCopy[length] = {
+                ...newInputsCopy[length],
+                user: e.target.value,
+              }
+              return newInputsCopy;
+            })
+          }}
         >
           {menuItem}
         </Select>
       </FormControl>
     </div>
   );
-  const newInputs = [];
-  for (let i = 0; i <= newInputsLength; i++) {
-    newInputs.push(row(i));
+  const newInputComponents = [];
+  for (let i = 0; i < newInputs.length; i++) {
+    newInputComponents.push(row(i));
   }
 
   const handleSubmit = event => {
@@ -162,11 +197,15 @@ const Compost = () => {
       .then(res => res.json())
       .then(data => {
         setGrabData(!grabData);
-        setNewInputs(0);
+        setNewInputs([{ itemName: '', user: '' }]);
         setAddedRows([]);
         setChangedRows({});
       });
 
+    // document.getElementById('newRow0item').value = '';
+    console.log('BEFORE', document.getElementById('newRow0user').value)
+    document.getElementById('newRow0user').value = 'sdfsdkljfksdlfjsdkl';
+    console.log('AFTER', document.getElementById('newRow0user').value)
   };
   return (
     <>
@@ -221,7 +260,7 @@ const Compost = () => {
         >
           <div style={{ height: '62vh', overflow: 'auto' }}>
             {list}
-            {newInputs}
+            {newInputComponents}
           </div>
           <Button variant="contained" type="submit" color="primary">
             Save Changes
