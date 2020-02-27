@@ -10,10 +10,15 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 import LinkDisplay from './components/LinkDisplay';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = makeStyles({
   root: {
-    width: 650,
+    width: '50em',
     height: 440,
   },
   title: {
@@ -26,7 +31,9 @@ const useStyles = makeStyles({
 
 const Home = () => {
   const [url, setUrl] = useState('');
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,16 +43,16 @@ const Home = () => {
     setOpen(false);
   };
   const classes = useStyles();
-
+  console.log(endDate, startDate);
   const handleSubmit = event => {
     event.preventDefault();
     const obj = {
       title: event.target.title.value,
       brief: event.target.description.value,
       location: event.target.location.value,
-      date: `${moment(event.target.startDate.value).format(
-        'MM/DD/YYYY',
-      )} - ${moment(event.target.endDate.value).format('MM/DD/YYYY')}`,
+      date: `${moment(startDate).format('MM/DD/YYYY')} - ${moment(
+        endDate,
+      ).format('MM/DD/YYYY')}`,
     };
     fetch('/api/pages', {
       method: 'POST',
@@ -54,7 +61,6 @@ const Home = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         handleClickOpen();
         setUrl(data);
       });
@@ -107,28 +113,34 @@ const Home = () => {
                   required
                 />
                 <div style={{ display: 'flex' }}>
-                  <TextField
-                    style={{ width: '200px' }}
-                    id="startDate"
-                    label="Start date"
-                    type="date"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    defaultValue={moment(new Date()).format('YYYY-MM-DD')}
-                    required
-                  />
-                  <TextField
-                    style={{ width: '200px', marginLeft: '20px' }}
-                    id="endDate"
-                    label="End date"
-                    type="date"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    defaultValue={moment(new Date()).format('YYYY-MM-DD')}
-                    required
-                  />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="startDate"
+                      minDate={new Date()}
+                      label="Start Date"
+                      value={startDate}
+                      onChange={value => {
+                        setStartDate(value);
+                      }}
+                    />
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="endDate"
+                      minDate={new Date()}
+                      label="End Date"
+                      value={endDate}
+                      onChange={value => {
+                        setEndDate(value);
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
                 </div>
                 <Button
                   style={{ marginTop: '10px' }}
@@ -138,7 +150,7 @@ const Home = () => {
                 >
                   Lets Go!
                 </Button>
-                <LinkDisplay open={open} handleClose={handleClose} />
+                <LinkDisplay url={url} open={open} handleClose={handleClose} />
               </CardContent>
             </form>
           </Card>
