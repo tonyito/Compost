@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useParams } from 'react-router';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Redirect, useHistory } from 'react-router-dom';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
@@ -17,6 +16,7 @@ const Compost = () => {
   const [addedRows, setAddedRows] = useState([]);
 
   const { id } = useParams();
+
   useEffect(() => {
     fetch(`/api/${id}`)
       .then(res => res.json())
@@ -26,12 +26,13 @@ const Compost = () => {
       })
       .catch(err => {
         console.log(err);
-        return window.location.replace('/');
+return window.location.replace('/');
       });
   }, [grabData]);
 
   const menuItem = [];
   const list = [];
+
   for (const i in state.users) {
     menuItem.push(
       <MenuItem value={state.users[i].id}>{state.users[i].name}</MenuItem>,

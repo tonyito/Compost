@@ -9,17 +9,17 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
-import LinkDisplay from './components/LinkDisplay';
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import LinkDisplay from './components/LinkDisplay';
 
 const useStyles = makeStyles({
   root: {
     width: '50em',
-    height: 440,
+    height: 500,
   },
   title: {
     fontSize: 26,
@@ -67,7 +67,14 @@ const Home = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#eeeeee' }}>
+    <div
+      style={{
+        backgroundImage:
+          'url(' +
+          'https://www.pixelstalk.net/wp-content/uploads/2016/04/Yosemite-wallpaper-night-wallpaper-HD.jpg' +
+          ')',
+      }}
+    >
       <Typography variant="h3" align="center">
         {'Compost'}
       </Typography>
@@ -79,9 +86,19 @@ const Home = () => {
         }}
       >
         <div style={{ marginBottom: '25px' }}>
-          <Card className={classes.root} variant="outlined">
+          <Card
+            className={classes.root}
+            variant="outlined"
+            style={{ backgroundColor: '#eeeeee' }}
+          >
             <form onSubmit={handleSubmit}>
-              <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+              <CardContent
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <Typography
                   className={classes.title}
                   color="textPrimary"
@@ -139,6 +156,7 @@ const Home = () => {
                       onChange={value => {
                         setEndDate(value);
                       }}
+                      style={{ marginLeft: '10px' }}
                     />
                   </MuiPickersUtilsProvider>
                 </div>
@@ -155,8 +173,15 @@ const Home = () => {
             </form>
           </Card>
         </div>
-        <div>
-          <Card className={classes.root} variant="outlined"></Card>
+        <div style={{ backgroundColor: '#eeeeee' }}>
+          <Card
+            style={{
+              width: '50em',
+              height: '375px',
+              backgroundColor: '#eeeeee',
+            }}
+            variant="outlined"
+          ></Card>
         </div>
       </div>
     </div>
