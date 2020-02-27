@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "build": "webpack --mode production",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot --inline --progress --colors --watch --content-base ./\" \"nodemon ./server/server.js\"",
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --hot --inline --progress --colors --watch --content-base ./\" \"nodemon ./server/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -45,7 +45,8 @@
     "react-hot-loader": "^4.6.3",
     "react-router-dom": "^5.1.2",
     "save": "^2.4.0",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "uuid": "^7.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

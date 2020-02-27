@@ -42,7 +42,7 @@ const Home = () => {
     event.preventDefault();
     const obj = {
       title: event.target.title.value,
-      description: event.target.description.value,
+      brief: event.target.description.value,
       location: event.target.location.value,
       date: `${moment(event.target.startDate.value).format(
         'MM/DD/YYYY',
@@ -55,6 +55,7 @@ const Home = () => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         handleClickOpen();
         setUrl(data);
       });
