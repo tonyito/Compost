@@ -45,7 +45,7 @@ const Home = () => {
       title: event.target.title.value,
       brief: event.target.description.value,
       location: event.target.address.value,
-      locationTitle: event.target.location.value,
+      location_title: event.target.location.value,
       date: `${moment(startDate).format('MM/DD/YYYY')} - ${moment(
         endDate,
       ).format('MM/DD/YYYY')}`,

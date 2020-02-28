@@ -18,6 +18,7 @@ const Compost = () => {
   const [addedRows, setAddedRows] = useState([]);
   const [showAddModal, toggleAddModal] = useState(false);
   const [showDeleteModal, toggleDeleteModal] = useState(false);
+  const [checked, setChecked] = useState([]);
 
   const { id } = useParams();
 
@@ -236,6 +237,9 @@ const Compost = () => {
             {state.information.date}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
+            {state.information.location_title}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
             {state.information.location}
           </Typography>
           <div
@@ -276,8 +280,14 @@ const Compost = () => {
           </Button>
         </form>
       </div>
-      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} />
-      <AddModal show={showAddModal} toggleAddModal={toggleAddModal} page={id} setGrabData={setGrabData} grabData={grabData} />
+      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} grabData={grabData} checked={checked} setChecked={setChecked} />
+      <AddModal
+        show={showAddModal}
+        toggleAddModal={toggleAddModal}
+        page={id}
+        setGrabData={setGrabData}
+        grabData={grabData}
+      />
     </>
   );
 };
