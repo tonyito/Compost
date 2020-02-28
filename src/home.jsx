@@ -11,6 +11,7 @@ import LinkDisplay from './components/LinkDisplay';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import LocationSearchInput from './components/Search';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -66,10 +67,12 @@ const Home = () => {
   return (
     <div
       style={{
-        backgroundImage:
+        background:
           'url(' +
           'https://www.pixelstalk.net/wp-content/uploads/2016/04/Yosemite-wallpaper-night-wallpaper-HD.jpg' +
-          ')',
+          ')' +
+          'no-repeat center center fixed',
+        height: '100vh',
       }}
     >
       <div
@@ -179,10 +182,27 @@ const Home = () => {
               <Card
                 style={{
                   width: '50em',
-                  height: '375px',
+                  height: '13vh',
                   borderRadius: '15px',
                 }}
-              ></Card>
+              >
+                <CardContent
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="h4">
+                    Need help finding a campsite?
+                  </Typography>
+                  <Link to="/landing">
+                    <Button variant="contained" color="primary">
+                      Click Here
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>

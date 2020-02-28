@@ -1,6 +1,6 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles.scss';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -23,6 +23,13 @@ const Compost = () => {
 
   const { id } = useParams();
 
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    console.log(messagesEndRef.current);
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
     fetch(`/api/${id}`)
       .then(res => res.json())
@@ -30,6 +37,7 @@ const Compost = () => {
         // console.log('this is data from use effect', data);
         // console.log('this is addedRows', addedRows);
         setState(data);
+        scrollToBottom();
       })
       .catch(err => {
         console.log(err);
@@ -103,9 +111,7 @@ const Compost = () => {
       });
   };
 
-const deleteNew = () => {
-
-}
+  const deleteNew = () => {};
 
   for (const i in state.list) {
     // console.log(i);
@@ -166,41 +172,46 @@ const deleteNew = () => {
       }}
       className="itemRow"
     >
-    <div>
-    <HighlightOff
-    key={`Delete ${newInputs.length}`}
-    id={`delete${newInputs.length}newitem`}
-    style={{position: 'relative', top: '2vh', right: '1vw'}}
-    onClick={() => {deleteNew(newInputs.length)}}
-    variant="outlined"
-  />
-      <TextField
-        style={{ width: '70vh', paddingRight: '5vw' }}
-        id={`newRow${newInputs.length}item`}
-        variant="outlined"
-        placeholder="New Item"
-        value={newInputs[length].itemName}
-        onChange={e => {
-          e.persist();
-          setNewInputs(newInputs => {
-            const newInputsCopy = newInputs.slice();
-            newInputsCopy[length] = {
-              ...newInputsCopy[length],
-              itemName: e.target.value,
-            };
-            return newInputsCopy;
-          });
-          if (e.target.value.length === 1) {
-            setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
-            const newRows = Object.assign({}, addedRows);
-            newRows[newInputs.length - 1] = true;
-            setAddedRows(newRows);
-          }
-        }}
-        inputProps={{
-          id: `newRow${length}item`,
-        }}
-      />
+      <div>
+        <HighlightOff
+          key={`Delete ${newInputs.length}`}
+          id={`delete${newInputs.length}newitem`}
+          style={{ position: 'relative', top: '2vh', right: '1vw' }}
+          onClick={() => {
+            deleteNew(newInputs.length);
+          }}
+          variant="outlined"
+        />
+        <TextField
+          style={{ width: '70vh', paddingRight: '5vw' }}
+          id={`newRow${newInputs.length}item`}
+          variant="outlined"
+          placeholder="New Item"
+          value={newInputs[length].itemName}
+          onChange={e => {
+            e.persist();
+            setNewInputs(newInputs => {
+              const newInputsCopy = newInputs.slice();
+              newInputsCopy[length] = {
+                ...newInputsCopy[length],
+                itemName: e.target.value,
+              };
+              return newInputsCopy;
+            });
+            if (e.target.value.length === 1) {
+              setNewInputs(newInput => [
+                ...newInput,
+                { itemName: '', user: '' },
+              ]);
+              const newRows = Object.assign({}, addedRows);
+              newRows[newInputs.length - 1] = true;
+              setAddedRows(newRows);
+            }
+          }}
+          inputProps={{
+            id: `newRow${length}item`,
+          }}
+        />
       </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
@@ -332,9 +343,10 @@ const deleteNew = () => {
           style={{ display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
         >
-          <div style={{ height: '62vh', overflow: 'auto' }}>
+          <div className="scroll" style={{ height: '62vh', overflow: 'auto' }}>
             {list}
             {newInputComponents}
+            <div ref={messagesEndRef} />
           </div>
           <Button variant="contained" type="submit" color="primary">
             Save Changes

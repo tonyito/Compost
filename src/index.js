@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './home.jsx';
-import Compost from './components/compost.jsx';
+import Home from './home';
+import Compost from './components/compost';
+import Landing from './components/Landing';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createMuiTheme, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -21,6 +22,7 @@ const Index = () => {
         <Router>
           <Switch>
             <Route path="/page/:id" component={Compost} />
+            <Route path="/landing" component={Landing} />
             <Route path="/" component={Home} />
           </Switch>
         </Router>
