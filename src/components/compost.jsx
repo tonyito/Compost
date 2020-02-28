@@ -5,6 +5,7 @@ import '../styles.scss';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import HighlightOff from '@material-ui/icons/HighlightOff';
 import { useParams } from 'react-router';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -79,6 +80,29 @@ const Compost = () => {
       };
     });
   };
+
+const deleteItem = (id) => {
+  id = {
+    id
+  }
+
+  fetch('/api/items', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(id),
+  })
+    .then(res => res.json())
+    .then(data => {
+      //close modal
+      setGrabData(!grabData);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
   for (const i in state.list) {
     // console.log(i);
     list.push(
@@ -90,6 +114,14 @@ const Compost = () => {
         }}
         className="itemRow"
       >
+      <div>
+      <HighlightOff
+      key={`Delete ${i}`}
+      id={`delete${i}item`}
+      style={{position: 'relative', top: '2vh', right: '1vw'}}
+      onClick={() => {deleteItem(state.list[i].id)}}
+      variant="outlined"
+    />
         <TextField
           style={{ width: '70vh', paddingRight: '5vw' }}
           id={`row${i}item`}
@@ -101,7 +133,6 @@ const Compost = () => {
             itemID: state.list[i].id,
           }}
         />
-
         <FormControl style={{ marginTop: '6px' }}>
           <InputLabel>Name</InputLabel>
           <Select
