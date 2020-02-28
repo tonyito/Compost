@@ -15,6 +15,7 @@ import LocationSearchInput from './components/Search';
 const useStyles = makeStyles({
   root: {
     width: '50em',
+    borderRadius: '15px',
   },
   title: {
     fontSize: 26,
@@ -71,103 +72,119 @@ const Home = () => {
           ')',
       }}
     >
-      <Typography variant="h3" align="center">
-        {'Compost'}
-      </Typography>
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          paddingTop: '8vh',
         }}
       >
-        <div style={{ marginBottom: '25px' }}>
-          <Card className={classes.root}>
-            <form onSubmit={handleSubmit}>
-              <CardContent
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            <Typography
+              variant="h3"
+              style={{ alignSelf: 'flex-start', marginBottom: '20px' }}
+            >
+              <b>Compost</b>
+            </Typography>
+            <div style={{ marginBottom: '25px' }}>
+              <Card className={classes.root}>
+                <form onSubmit={handleSubmit}>
+                  <CardContent
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Typography
+                      className={classes.title}
+                      color="textPrimary"
+                      gutterBottom
+                    >
+                      Start planning your trip!
+                    </Typography>
+                    <TextField
+                      id="title"
+                      style={{ width: '30vw' }}
+                      variant="outlined"
+                      placeholder="Title"
+                      required
+                    />
+                    <TextField
+                      style={{ margin: '10px 0 10px 0', width: '30vw' }}
+                      id="description"
+                      multiline
+                      rows="4"
+                      placeholder="Description"
+                      variant="outlined"
+                      required
+                    />
+                    <TextField
+                      id="location"
+                      style={{ width: '30vw', marginBottom: '15px' }}
+                      variant="outlined"
+                      placeholder="Location Title"
+                      required
+                    />
+                    <LocationSearchInput />
+                    <div style={{ display: 'flex' }}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          disableToolbar
+                          variant="inline"
+                          format="MM/dd/yyyy"
+                          margin="normal"
+                          id="startDate"
+                          minDate={new Date()}
+                          label="Start Date"
+                          value={startDate}
+                          onChange={setStartDate}
+                        />
+                        <DatePicker
+                          disableToolbar
+                          variant="inline"
+                          format="MM/dd/yyyy"
+                          margin="normal"
+                          id="endDate"
+                          minDate={new Date()}
+                          label="End Date"
+                          value={endDate}
+                          onChange={setEndDate}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </div>
+                    <Button
+                      style={{ marginTop: '10px' }}
+                      variant="contained"
+                      type="submit"
+                      color="primary"
+                    >
+                      Lets Go!
+                    </Button>
+                    <LinkDisplay
+                      url={url}
+                      open={open}
+                      handleClose={handleClose}
+                    />
+                  </CardContent>
+                </form>
+              </Card>
+            </div>
+            <div>
+              <Card
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
+                  width: '50em',
+                  height: '375px',
+                  borderRadius: '15px',
                 }}
-              >
-                <Typography
-                  className={classes.title}
-                  color="textPrimary"
-                  gutterBottom
-                >
-                  Create your adventure
-                </Typography>
-                <TextField
-                  id="title"
-                  style={{ width: '30vw' }}
-                  variant="outlined"
-                  placeholder="Title"
-                  required
-                />
-                <TextField
-                  style={{ margin: '10px 0 10px 0', width: '30vw' }}
-                  id="description"
-                  multiline
-                  rows="4"
-                  placeholder="Description"
-                  variant="outlined"
-                  required
-                />
-                <TextField
-                  id="location"
-                  style={{ width: '30vw', marginBottom: '15px' }}
-                  variant="outlined"
-                  placeholder="Location Title"
-                  required
-                />
-                <LocationSearchInput />
-                <div style={{ display: 'flex' }}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DatePicker
-                      disableToolbar
-                      variant="inline"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="startDate"
-                      minDate={new Date()}
-                      label="Start Date"
-                      value={startDate}
-                      onChange={setStartDate}
-                    />
-                    <DatePicker
-                      disableToolbar
-                      variant="inline"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="endDate"
-                      minDate={new Date()}
-                      label="End Date"
-                      value={endDate}
-                      onChange={setEndDate}
-                    />
-                  </MuiPickersUtilsProvider>
-                </div>
-                <Button
-                  style={{ marginTop: '10px' }}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                >
-                  Lets Go!
-                </Button>
-                <LinkDisplay url={url} open={open} handleClose={handleClose} />
-              </CardContent>
-            </form>
-          </Card>
-        </div>
-        <div>
-          <Card
-            style={{
-              width: '50em',
-              height: '375px',
-            }}
-          ></Card>
+              ></Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

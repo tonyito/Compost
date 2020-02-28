@@ -5,8 +5,12 @@ import '../styles.scss';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import HighlightOff from '@material-ui/icons/HighlightOff';
 import { useParams } from 'react-router';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import AddModal from './AddModal';
 import DeleteModal from './DeleteModal';
 
@@ -62,41 +66,96 @@ const Compost = () => {
     });
   };
 
+  const handleUserEdit = (event, row) => {
+    event.persist();
+    const newChangedRow = Object.assign({}, changedRows);
+    newChangedRow[row] = true;
+    setChangedRows(newChangedRow);
+    setState(oldState => {
+      const list = oldState.list.slice();
+      list[row] = {
+        ...list[row],
+        user: event.target.value,
+      };
+      return {
+        ...oldState,
+        list,
+      };
+    });
+  };
+
+  const deleteItem = id => {
+    id = {
+      id,
+    };
+
+    fetch('/api/items', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(id),
+    })
+      .then(res => res.json())
+      .then(data => {
+        //close modal
+        setGrabData(!grabData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+const deleteNew = () => {
+
+}
+
   for (const i in state.list) {
     // console.log(i);
     list.push(
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
           margin: '1vh',
         }}
         className="itemRow"
       >
-        <TextField
-          style={{ width: '70vh' }}
-          id={`row${i}item`}
-          variant="outlined"
-          // defaultValue={state.list[i].itemName}
-          value={state.list[i].itemName}
-          onChange={e => handleTextEdit(e, i)}
-          inputProps={{
-            itemID: state.list[i].id,
-          }}
-        />
-
-        <FormControl>
-          <InputLabel>Name</InputLabel>
-          <Select
-            style={{ width: '30vh' }}
-            defaultValue={state.list[i].user}
-            inputProps={{
-              id: `row${i}user`,
+        <div>
+          <HighlightOff
+            key={`Delete ${i}`}
+            id={`delete${i}item`}
+            style={{ position: 'relative', top: '2vh', right: '1vw' }}
+            onClick={() => {
+              deleteItem(state.list[i].id);
             }}
-          >
-            {menuItem}
-          </Select>
-        </FormControl>
+            variant="outlined"
+          />
+          <TextField
+            style={{ width: '70vh', paddingRight: '5vw' }}
+            id={`row${i}item`}
+            variant="outlined"
+            // defaultValue={state.list[i].itemName}
+            value={state.list[i].itemName}
+            onChange={e => handleTextEdit(e, i)}
+            inputProps={{
+              itemID: state.list[i].id,
+            }}
+          />
+          <FormControl style={{ marginTop: '6px' }}>
+            <InputLabel>Name</InputLabel>
+            <Select
+              style={{ width: '30vh' }}
+              defaultValue={state.list[i].user}
+              inputProps={{
+                id: `row${i}user`,
+              }}
+              onChange={e => handleUserEdit(e, i)}
+            >
+              {menuItem}
+            </Select>
+          </FormControl>
+        </div>
       </div>,
     );
   }
@@ -105,13 +164,21 @@ const Compost = () => {
     <div
       style={{
         display: 'flex',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         margin: '1vh',
       }}
       className="itemRow"
     >
+    <div>
+    <HighlightOff
+    key={`Delete ${newInputs.length}`}
+    id={`delete${newInputs.length}newitem`}
+    style={{position: 'relative', top: '2vh', right: '1vw'}}
+    onClick={() => {deleteNew(newInputs.length)}}
+    variant="outlined"
+  />
       <TextField
-        style={{ width: '70vh' }}
+        style={{ width: '70vh', paddingRight: '5vw' }}
         id={`newRow${newInputs.length}item`}
         variant="outlined"
         placeholder="New Item"
@@ -137,6 +204,7 @@ const Compost = () => {
           id: `newRow${length}item`,
         }}
       />
+      </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
         <Select
@@ -214,7 +282,6 @@ const Compost = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '90vh',
         }}
       >
         <div
@@ -223,11 +290,11 @@ const Compost = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            borderBottom: 'solid',
             minHeight: '30vh',
+            paddingBottom: '10px',
           }}
         >
-          <Typography variant="h1" component="h2" gutterBottom>
+          <Typography variant="h1" component="h2">
             <b>{state.information.title}</b>
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
@@ -267,6 +334,7 @@ const Compost = () => {
             </Button>
           </div>
         </div>
+        <hr style={{ width: '80%' }} />
         <form
           style={{ display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
