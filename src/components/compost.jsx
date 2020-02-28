@@ -106,9 +106,9 @@ const Compost = () => {
       });
   };
 
-const deleteNew = () => {
+  const deleteNew = () => {
 
-}
+  }
 
   for (const i in state.list) {
     // console.log(i);
@@ -169,41 +169,41 @@ const deleteNew = () => {
       }}
       className="itemRow"
     >
-    <div>
-    <HighlightOff
-    key={`Delete ${newInputs.length}`}
-    id={`delete${newInputs.length}newitem`}
-    style={{position: 'relative', top: '2vh', right: '1vw'}}
-    onClick={() => {deleteNew(newInputs.length)}}
-    variant="outlined"
-  />
-      <TextField
-        style={{ width: '70vh', paddingRight: '5vw' }}
-        id={`newRow${newInputs.length}item`}
-        variant="outlined"
-        placeholder="New Item"
-        value={newInputs[length].itemName}
-        onChange={e => {
-          e.persist();
-          setNewInputs(newInputs => {
-            const newInputsCopy = newInputs.slice();
-            newInputsCopy[length] = {
-              ...newInputsCopy[length],
-              itemName: e.target.value,
-            };
-            return newInputsCopy;
-          });
-          if (e.target.value.length === 1) {
-            setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
-            const newRows = Object.assign({}, addedRows);
-            newRows[newInputs.length - 1] = true;
-            setAddedRows(newRows);
-          }
-        }}
-        inputProps={{
-          id: `newRow${length}item`,
-        }}
-      />
+      <div>
+        <HighlightOff
+          key={`Delete ${newInputs.length}`}
+          id={`delete${newInputs.length}newitem`}
+          style={{ position: 'relative', top: '2vh', right: '1vw' }}
+          onClick={() => { deleteNew(newInputs.length) }}
+          variant="outlined"
+        />
+        <TextField
+          style={{ width: '70vh', paddingRight: '5vw' }}
+          id={`newRow${newInputs.length}item`}
+          variant="outlined"
+          placeholder="New Item"
+          value={newInputs[length].itemName}
+          onChange={e => {
+            e.persist();
+            setNewInputs(newInputs => {
+              const newInputsCopy = newInputs.slice();
+              newInputsCopy[length] = {
+                ...newInputsCopy[length],
+                itemName: e.target.value,
+              };
+              return newInputsCopy;
+            });
+            if (e.target.value.length === 1) {
+              setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
+              const newRows = Object.assign({}, addedRows);
+              newRows[newInputs.length - 1] = true;
+              setAddedRows(newRows);
+            }
+          }}
+          inputProps={{
+            id: `newRow${length}item`,
+          }}
+        />
       </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
@@ -348,7 +348,7 @@ const deleteNew = () => {
           </Button>
         </form>
       </div>
-      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} grabData={grabData} checked={checked} setChecked={setChecked} />
+      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} grabData={grabData} setGrabData={setGrabData} checked={checked} setChecked={setChecked} />
       <AddModal
         show={showAddModal}
         toggleAddModal={toggleAddModal}
