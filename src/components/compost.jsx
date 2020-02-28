@@ -7,7 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import HighlightOff from '@material-ui/icons/HighlightOff';
 import { useParams } from 'react-router';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import AddModal from './AddModal';
 
 const Compost = () => {
@@ -194,7 +197,6 @@ const deleteItem = (id) => {
           onChange={e => {
             e.persist();
             setNewInputs(newInputs => {
-
               const newInputsCopy = newInputs.slice();
               newInputsCopy[length] = {
                 ...newInputsCopy[length],
