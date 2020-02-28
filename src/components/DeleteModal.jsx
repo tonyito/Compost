@@ -71,9 +71,9 @@ const DeleteModal = (props) => {
     event.preventDefault();
     const usersToDelete = { id: props.checked };
     //fetch to send users to delete to db
-    fetch('/',
+    fetch('/api/users',
       {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -81,9 +81,11 @@ const DeleteModal = (props) => {
       })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         props.toggleDeleteModal(false);
-        props.setGrabData(!grabData)
+        props.setGrabData(!props.grabData)
       })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -115,7 +117,7 @@ const DeleteModal = (props) => {
                 {usersList}
               </List>
             </div>
-            <Button variant="contained" type="submit" color="primary" onClick={(e) => { handleSubmit }}>
+            <Button variant="contained" type="submit" color="primary" onClick={handleSubmit}>
               Delete User
             </Button>
           </form>
