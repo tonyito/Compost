@@ -18,9 +18,6 @@ const useStyles = makeStyles({
     width: '50em',
     borderRadius: '15px',
   },
-  title: {
-    fontSize: 26,
-  },
   pos: {
     marginBottom: 12,
   },
@@ -104,11 +101,7 @@ const Home = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <Typography
-                      className={classes.title}
-                      color="textPrimary"
-                      gutterBottom
-                    >
+                    <Typography color="textPrimary" variant="h3" gutterBottom>
                       Start planning your trip!
                     </Typography>
                     <TextField
@@ -193,7 +186,7 @@ const Home = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <Typography variant="h4">
+                  <Typography variant="h4" style={{ paddingBottom: '15px' }}>
                     Need help finding a campsite?
                   </Typography>
                   <Link to="/landing">
