@@ -81,27 +81,27 @@ const Compost = () => {
     });
   };
 
-const deleteItem = (id) => {
-  id = {
-    id
-  }
+  const deleteItem = id => {
+    id = {
+      id,
+    };
 
-  fetch('/api/items', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(id),
-  })
-    .then(res => res.json())
-    .then(data => {
-      //close modal
-      setGrabData(!grabData);
+    fetch('/api/items', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(id),
     })
-    .catch(err => {
-      console.log(err);
-    });
-}
+      .then(res => res.json())
+      .then(data => {
+        //close modal
+        setGrabData(!grabData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   for (const i in state.list) {
     // console.log(i);
@@ -114,38 +114,41 @@ const deleteItem = (id) => {
         }}
         className="itemRow"
       >
-      <div>
-      <HighlightOff
-      key={`Delete ${i}`}
-      id={`delete${i}item`}
-      style={{position: 'relative', top: '2vh', right: '1vw'}}
-      onClick={() => {deleteItem(state.list[i].id)}}
-      variant="outlined"
-    />
-        <TextField
-          style={{ width: '70vh', paddingRight: '5vw' }}
-          id={`row${i}item`}
-          variant="outlined"
-          // defaultValue={state.list[i].itemName}
-          value={state.list[i].itemName}
-          onChange={e => handleTextEdit(e, i)}
-          inputProps={{
-            itemID: state.list[i].id,
-          }}
-        />
-        <FormControl style={{ marginTop: '6px' }}>
-          <InputLabel>Name</InputLabel>
-          <Select
-            style={{ width: '30vh' }}
-            defaultValue={state.list[i].user}
-            inputProps={{
-              id: `row${i}user`,
+        <div>
+          <HighlightOff
+            key={`Delete ${i}`}
+            id={`delete${i}item`}
+            style={{ position: 'relative', top: '2vh', right: '1vw' }}
+            onClick={() => {
+              deleteItem(state.list[i].id);
             }}
-            onChange={e => handleUserEdit(e, i)}
-          >
-            {menuItem}
-          </Select>
-        </FormControl>
+            variant="outlined"
+          />
+          <TextField
+            style={{ width: '70vh', paddingRight: '5vw' }}
+            id={`row${i}item`}
+            variant="outlined"
+            // defaultValue={state.list[i].itemName}
+            value={state.list[i].itemName}
+            onChange={e => handleTextEdit(e, i)}
+            inputProps={{
+              itemID: state.list[i].id,
+            }}
+          />
+          <FormControl style={{ marginTop: '6px' }}>
+            <InputLabel>Name</InputLabel>
+            <Select
+              style={{ width: '30vh' }}
+              defaultValue={state.list[i].user}
+              inputProps={{
+                id: `row${i}user`,
+              }}
+              onChange={e => handleUserEdit(e, i)}
+            >
+              {menuItem}
+            </Select>
+          </FormControl>
+        </div>
       </div>,
     );
   }
