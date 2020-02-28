@@ -12,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddModal from './AddModal';
+import DeleteModal from './DeleteModal';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
@@ -20,6 +21,8 @@ const Compost = () => {
   const [changedRows, setChangedRows] = useState({});
   const [addedRows, setAddedRows] = useState([]);
   const [showAddModal, toggleAddModal] = useState(false);
+  const [showDeleteModal, toggleDeleteModal] = useState(false);
+  const [checked, setChecked] = useState([]);
 
   const { id } = useParams();
 
@@ -111,7 +114,24 @@ const Compost = () => {
       });
   };
 
+<<<<<<< HEAD
   const deleteNew = () => {};
+=======
+const deleteNew = (e) => {
+  // console.log(addedRows);
+  const position = e[`id`].slice(9);
+  // if (!position) setAddedRows(addedRows.shift());
+  // else if (position.length !== 1 && position === position.length - 1) setAddedRows(addedRows.pop());
+  const thing =[...newInputs];
+    //  if (!position) setNewInputs(thing.shift());
+    //  else if (position.length !== 1 && position === position.length - 1) setNewInputs(thing.pop());
+    //  else {
+      thing.splice(position, 1);
+      // console.log("thing", thing);
+       setNewInputs(thing);
+    //  }
+  }
+>>>>>>> e5bb980a0b6a08b8ed84feed7c3fe78c1b5f5024
 
   for (const i in state.list) {
     // console.log(i);
@@ -172,6 +192,7 @@ const Compost = () => {
       }}
       className="itemRow"
     >
+<<<<<<< HEAD
       <div>
         <HighlightOff
           key={`Delete ${newInputs.length}`}
@@ -212,6 +233,44 @@ const Compost = () => {
             id: `newRow${length}item`,
           }}
         />
+=======
+    <div>
+    <HighlightOff
+    key={`Delete ${length}`}
+    id={`deletenew${length}`}
+    style={{position: 'relative', top: '2vh', right: '1vw'}}
+    onClick={(e) => {deleteNew(e.target)}}
+    variant="outlined"
+  />
+      <TextField
+        style={{ width: '70vh', paddingRight: '5vw' }}
+        id={`newRow${newInputs.length}item`}
+        variant="outlined"
+        placeholder="New Item"
+        value={newInputs[length].itemName}
+        onChange={e => {
+          e.persist();
+          setNewInputs(newInputs => {
+            const newInputsCopy = newInputs.slice();
+            newInputsCopy[length] = {
+              ...newInputsCopy[length],
+              itemName: e.target.value,
+            };
+            return newInputsCopy;
+          });
+          if (e.target.value.length === 1) {
+            setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
+            const newRows = Object.assign({}, addedRows);
+            newRows[newInputs.length - 1] = true;
+            setAddedRows(newRows);
+          }
+        }}
+        inputProps={{
+          id: `newRow${length}item`,
+        }}
+      />
+
+>>>>>>> e5bb980a0b6a08b8ed84feed7c3fe78c1b5f5024
       </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
@@ -333,7 +392,11 @@ const Compost = () => {
                 add user
               </Button>
             </div>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary"
+              onClick={() => {
+                toggleDeleteModal(true);
+              }}
+            >
               delete user
             </Button>
           </div>
@@ -353,6 +416,7 @@ const Compost = () => {
           </Button>
         </form>
       </div>
+      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} grabData={grabData} setGrabData={setGrabData} checked={checked} setChecked={setChecked} />
       <AddModal
         show={showAddModal}
         toggleAddModal={toggleAddModal}

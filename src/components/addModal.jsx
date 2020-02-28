@@ -44,6 +44,7 @@ const AddModal = props => {
       .then(res => res.json())
       .then(data => {
         //close modal
+        props.toggleAddModal(false);
         props.setGrabData(!props.grabData);
       })
       .catch(err => {
