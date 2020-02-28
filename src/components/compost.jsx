@@ -1,6 +1,6 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles.scss';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -26,6 +26,13 @@ const Compost = () => {
 
   const { id } = useParams();
 
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    console.log(messagesEndRef.current);
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
     fetch(`/api/${id}`)
       .then(res => res.json())
@@ -33,6 +40,7 @@ const Compost = () => {
         // console.log('this is data from use effect', data);
         // console.log('this is addedRows', addedRows);
         setState(data);
+        scrollToBottom();
       })
       .catch(err => {
         console.log(err);
@@ -106,20 +114,20 @@ const Compost = () => {
       });
   };
 
-const deleteNew = (e) => {
-  // console.log(addedRows);
-  const position = e[`id`].slice(9);
-  // if (!position) setAddedRows(addedRows.shift());
-  // else if (position.length !== 1 && position === position.length - 1) setAddedRows(addedRows.pop());
-  const thing =[...newInputs];
+  const deleteNew = e => {
+    // console.log(addedRows);
+    const position = e[`id`].slice(9);
+    // if (!position) setAddedRows(addedRows.shift());
+    // else if (position.length !== 1 && position === position.length - 1) setAddedRows(addedRows.pop());
+    const thing = [...newInputs];
     //  if (!position) setNewInputs(thing.shift());
     //  else if (position.length !== 1 && position === position.length - 1) setNewInputs(thing.pop());
     //  else {
-      thing.splice(position, 1);
-      // console.log("thing", thing);
-       setNewInputs(thing);
+    thing.splice(position, 1);
+    // console.log("thing", thing);
+    setNewInputs(thing);
     //  }
-  }
+  };
 
   for (const i in state.list) {
     // console.log(i);
@@ -180,42 +188,46 @@ const deleteNew = (e) => {
       }}
       className="itemRow"
     >
-    <div>
-    <HighlightOff
-    key={`Delete ${length}`}
-    id={`deletenew${length}`}
-    style={{position: 'relative', top: '2vh', right: '1vw'}}
-    onClick={(e) => {deleteNew(e.target)}}
-    variant="outlined"
-  />
-      <TextField
-        style={{ width: '70vh', paddingRight: '5vw' }}
-        id={`newRow${newInputs.length}item`}
-        variant="outlined"
-        placeholder="New Item"
-        value={newInputs[length].itemName}
-        onChange={e => {
-          e.persist();
-          setNewInputs(newInputs => {
-            const newInputsCopy = newInputs.slice();
-            newInputsCopy[length] = {
-              ...newInputsCopy[length],
-              itemName: e.target.value,
-            };
-            return newInputsCopy;
-          });
-          if (e.target.value.length === 1) {
-            setNewInputs(newInput => [...newInput, { itemName: '', user: '' }]);
-            const newRows = Object.assign({}, addedRows);
-            newRows[newInputs.length - 1] = true;
-            setAddedRows(newRows);
-          }
-        }}
-        inputProps={{
-          id: `newRow${length}item`,
-        }}
-      />
-
+      <div>
+        <HighlightOff
+          key={`Delete ${length}`}
+          id={`deletenew${length}`}
+          style={{ position: 'relative', top: '2vh', right: '1vw' }}
+          onClick={e => {
+            deleteNew(e.target);
+          }}
+          variant="outlined"
+        />
+        <TextField
+          style={{ width: '70vh', paddingRight: '5vw' }}
+          id={`newRow${newInputs.length}item`}
+          variant="outlined"
+          placeholder="New Item"
+          value={newInputs[length].itemName}
+          onChange={e => {
+            e.persist();
+            setNewInputs(newInputs => {
+              const newInputsCopy = newInputs.slice();
+              newInputsCopy[length] = {
+                ...newInputsCopy[length],
+                itemName: e.target.value,
+              };
+              return newInputsCopy;
+            });
+            if (e.target.value.length === 1) {
+              setNewInputs(newInput => [
+                ...newInput,
+                { itemName: '', user: '' },
+              ]);
+              const newRows = Object.assign({}, addedRows);
+              newRows[newInputs.length - 1] = true;
+              setAddedRows(newRows);
+            }
+          }}
+          inputProps={{
+            id: `newRow${length}item`,
+          }}
+        />
       </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
@@ -337,7 +349,9 @@ const deleteNew = (e) => {
                 add user
               </Button>
             </div>
-            <Button variant="contained" color="primary"
+            <Button
+              variant="contained"
+              color="primary"
               onClick={() => {
                 toggleDeleteModal(true);
               }}
@@ -351,16 +365,25 @@ const deleteNew = (e) => {
           style={{ display: 'flex', flexDirection: 'column' }}
           onSubmit={handleSubmit}
         >
-          <div style={{ height: '62vh', overflow: 'auto' }}>
+          <div className="scroll" style={{ height: '62vh', overflow: 'auto' }}>
             {list}
             {newInputComponents}
+            <div ref={messagesEndRef} />
           </div>
           <Button variant="contained" type="submit" color="primary">
             Save Changes
           </Button>
         </form>
       </div>
-      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} grabData={grabData} setGrabData={setGrabData} checked={checked} setChecked={setChecked} />
+      <DeleteModal
+        show={showDeleteModal}
+        toggleDeleteModal={toggleDeleteModal}
+        users={state.users}
+        grabData={grabData}
+        setGrabData={setGrabData}
+        checked={checked}
+        setChecked={setChecked}
+      />
       <AddModal
         show={showAddModal}
         toggleAddModal={toggleAddModal}
