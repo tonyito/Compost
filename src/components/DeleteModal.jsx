@@ -30,35 +30,60 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
 const DeleteModal = (props) => {
   const classes = useStyles();
 
+  const handleToggle = val => () => {
+    console.log('this is value of index of checked', props.checked.indexOf(val));
+    const newChecked = [...props.checked];
+    if (props.checked.indexOf(val) === -1) {
+      newChecked.push(val);
+    } else {
+      newChecked.splice(newChecked.indexOf(val), 1);
+    }
+
+    console.log('newChecked', newChecked);
+    props.setChecked(newChecked);
+  }
+
+  console.log('this is props', props.users[0]);
   const usersList = [];
   for (let i in props.users) {
     usersList.push(
       <ListItem
         id={props.users[i].id}
+        key={'hell' + i}
       >
         <Checkbox
-          checked={checked.indexOf(value) !== -1}
+          onChange={handleToggle(i)}
+          key={'shit' + i}
         />
-        <ListItemText>
+        <ListItemText key={'hello' + i}>
           {props.users[i].name}
         </ListItemText>
       </ListItem>
     )
   }
 
+
   const handleSubmit = (event) => {
-    const usersToDelete = [];
-    console.log('this is event target', event.target)
-    for (let i = 0; i < usersList.length; i++) {
-      if (event.target[i].checked === 1) {
-
-      }
-      usersToDelete.push()
-    }
-
+    event.preventDefault();
+    const usersToDelete = { id: props.checked };
+    //fetch to send users to delete to db
+    fetch('/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(usersToDelete),
+      })
+      .then(res => res.json())
+      .then(data => {
+        props.toggleDeleteModal(false);
+        props.setGrabData(!grabData)
+      })
   }
 
   return (
@@ -77,10 +102,9 @@ const DeleteModal = (props) => {
             alignItems: 'center',
           }}
         >
-          <form onSubmit={handleSubmit}>
+          <form /*onSubmit={handleSubmit}*/>
             <div>
               <Typography
-                className={classes.title}
                 color="textPrimary"
                 variant="h4"
                 gutterBottom
@@ -91,13 +115,13 @@ const DeleteModal = (props) => {
                 {usersList}
               </List>
             </div>
-            <Button variant="contained" type="submit" color="primary">
+            <Button variant="contained" type="submit" color="primary" onClick={(e) => { handleSubmit }}>
               Delete User
             </Button>
           </form>
         </CardContent>
       </Card>
-    </Modal>
+    </Modal >
   )
 
 }
