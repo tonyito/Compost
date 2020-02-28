@@ -100,6 +100,10 @@ const deleteItem = (id) => {
     });
 }
 
+const deleteNew = () => {
+
+}
+
   for (const i in state.list) {
     // console.log(i);
     list.push(
@@ -157,6 +161,14 @@ const deleteItem = (id) => {
       }}
       className="itemRow"
     >
+    <div>
+    <HighlightOff
+    key={`Delete ${newInputs.length}`}
+    id={`delete${newInputs.length}newitem`}
+    style={{position: 'relative', top: '2vh', right: '1vw'}}
+    onClick={() => {deleteNew(newInputs.length)}}
+    variant="outlined"
+  />
       <TextField
         style={{ width: '70vh' }}
         id={`newRow${newInputs.length}item`}
@@ -184,6 +196,7 @@ const deleteItem = (id) => {
           id: `newRow${length}item`,
         }}
       />
+      </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
         <Select
