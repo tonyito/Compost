@@ -12,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddModal from './AddModal';
+import DeleteModal from './DeleteModal';
 
 const Compost = () => {
   const [state, setState] = useState({ information: {}, list: [], users: {} });
@@ -20,6 +21,8 @@ const Compost = () => {
   const [changedRows, setChangedRows] = useState({});
   const [addedRows, setAddedRows] = useState([]);
   const [showAddModal, toggleAddModal] = useState(false);
+  const [showDeleteModal, toggleDeleteModal] = useState(false);
+  const [checked, setChecked] = useState([]);
 
   const { id } = useParams();
 
@@ -116,9 +119,7 @@ const deleteNew = (e) => {
       // console.log("thing", thing);
        setNewInputs(thing);
     //  }
-
-
-}
+  }
 
   for (const i in state.list) {
     // console.log(i);
@@ -214,6 +215,7 @@ const deleteNew = (e) => {
           id: `newRow${length}item`,
         }}
       />
+
       </div>
       <FormControl>
         <InputLabel>Name</InputLabel>
@@ -335,7 +337,11 @@ const deleteNew = (e) => {
                 add user
               </Button>
             </div>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary"
+              onClick={() => {
+                toggleDeleteModal(true);
+              }}
+            >
               delete user
             </Button>
           </div>
@@ -354,6 +360,7 @@ const deleteNew = (e) => {
           </Button>
         </form>
       </div>
+      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} users={state.users} grabData={grabData} setGrabData={setGrabData} checked={checked} setChecked={setChecked} />
       <AddModal
         show={showAddModal}
         toggleAddModal={toggleAddModal}
