@@ -103,7 +103,20 @@ const Compost = () => {
       });
   };
 
-const deleteNew = () => {
+const deleteNew = (e) => {
+  // console.log(addedRows);
+  const position = e[`id`].slice(9);
+  // if (!position) setAddedRows(addedRows.shift());
+  // else if (position.length !== 1 && position === position.length - 1) setAddedRows(addedRows.pop());
+  const thing =[...newInputs];
+    //  if (!position) setNewInputs(thing.shift());
+    //  else if (position.length !== 1 && position === position.length - 1) setNewInputs(thing.pop());
+    //  else {
+      thing.splice(position, 1);
+      // console.log("thing", thing);
+       setNewInputs(thing);
+    //  }
+
 
 }
 
@@ -168,10 +181,10 @@ const deleteNew = () => {
     >
     <div>
     <HighlightOff
-    key={`Delete ${newInputs.length}`}
-    id={`delete${newInputs.length}newitem`}
+    key={`Delete ${length}`}
+    id={`deletenew${length}`}
     style={{position: 'relative', top: '2vh', right: '1vw'}}
-    onClick={() => {deleteNew(newInputs.length)}}
+    onClick={(e) => {deleteNew(e.target)}}
     variant="outlined"
   />
       <TextField
