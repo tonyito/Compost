@@ -29,7 +29,6 @@ const Compost = () => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    console.log(messagesEndRef.current);
     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -39,6 +38,7 @@ const Compost = () => {
       .then(data => {
         // console.log('this is data from use effect', data);
         // console.log('this is addedRows', addedRows);
+        document.title = 'Compost | ' + data.information.title;
         setState(data);
         scrollToBottom();
       })
