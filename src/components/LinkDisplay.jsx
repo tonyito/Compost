@@ -2,26 +2,49 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const useStyles = makeStyles(theme => ({
+  link: {
+    color: 'white',
+  },
+}));
 
 const LinkDisplay = props => {
+  const classes = useStyles();
+  const url = `http://${window.location.host}/page/${props.url}`;
+  const copyFunction = () => {
+    const textArea = document.querySelector('.linkText');
+    textArea.value = url;
+    textArea.focus();
+    textArea.select();
+    textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+    document.execCommand('copy');
+  };
+
   return (
     <div>
       <Dialog
         open={props.open}
-        TransitionComponent={Transition}
-        keepMounted
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {'http://' + window.location.host + '/page/' + props.url}
+          <DialogContentText
+            id="alert-dialog-slide-description"
+            style={{ display: 'flex' }}
+          >
+            <a className={classes.link} href={url}>
+              <Typography>{url}</Typography>
+            </a>
+            <FileCopyIcon onClick={copyFunction} style={{ color: 'white' }} />
+            <textarea
+              className="linkText"
+              style={{ height: '0.01x', width: '0.01px' }}
+            />
           </DialogContentText>
         </DialogContent>
       </Dialog>

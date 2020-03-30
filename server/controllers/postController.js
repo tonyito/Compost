@@ -64,15 +64,16 @@ postController.postNew = async (req, res, next) => {
 
 //controller to POST new page to the database
 postController.postNewPage = (req, res, next) => {
-  const query = `INSERT INTO pages (param, active, location, brief, title, date) 
-                VALUES ($1, true, $2, $3, $4, $5)`;
-  res.locals.locationID = v4().slice(0,6);
+  const query = `INSERT INTO pages (param, active, location, brief, title, date, location_title) 
+                VALUES ($1, true, $2, $3, $4, $5, $6)`;
+  res.locals.locationID = v4().slice(0, 6);
   db.query(query, [
     res.locals.locationID,
     req.body.location,
     req.body.brief,
     req.body.title,
     req.body.date,
+    req.body.location_title,
   ])
     .then(() => {
       return next();
@@ -90,7 +91,13 @@ postController.postNewPage = (req, res, next) => {
 postController.postNewUser = (req, res, next) => {
   const query = `INSERT INTO users (page_id, name, color, active, phone, email) 
                 VALUES ($1, $2, $3, true, $4, $5)`;
-  db.query(query, [req.body.location, req.body.name, req.body.color, req.body.phone, req.body.email])
+  db.query(query, [
+    res.locals.locationID,
+    req.body.name,
+    req.body.color,
+    req.body.phone,
+    req.body.email,
+  ])
     .then(() => {
       return next();
     })
