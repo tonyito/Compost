@@ -172,6 +172,9 @@ const Home = () => {
               </Card>
             </div>
             {/* <div>
+
+            <div>
+
               <Card
                 style={{
                   width: '50em',
@@ -196,7 +199,9 @@ const Home = () => {
                   </Link>
                 </CardContent>
               </Card>
+
             </div> */}
+
           </div>
         </div>
       </div>
